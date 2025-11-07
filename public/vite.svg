@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="410" height="404" viewBox="0 0 410 404" fill="none" xmlns="http://www.w3.org/2000/svg">
+<defs>
+<linearGradient id="g1" x1="6" y1="33" x2="235" y2="344" gradientUnits="userSpaceOnUse">
+<stop stop-color="#41D1FF"/>
+<stop offset="1" stop-color="#BD34FE"/>
+</linearGradient>
+<linearGradient id="g2" x1="194.65" y1="8.818" x2="236.08" y2="292.989" gradientUnits="userSpaceOnUse">
+<stop stop-color="#FFEA83"/>
+<stop offset="0.083" stop-color="#FFDD35"/>
+<stop offset="1" stop-color="#FFA800"/>
+</linearGradient>
+</defs>
+<path d="M399.641 59.524C402.791 55.695 400.351 49.812 395.354 49.815L303.312 49.872C300.753 49.874 298.634 51.993 298.633 54.552L298.575 146.594C298.572 151.59 304.455 154.03 308.284 150.88L399.641 59.524Z" fill="url(#g1)"/>
+<path d="M12.378 59.524C9.227 55.695 11.667 49.812 16.664 49.815L108.706 49.872C111.265 49.874 113.384 51.993 113.385 54.552L113.443 146.594C113.446 151.59 107.563 154.03 103.734 150.88L12.378 59.524Z" fill="url(#g1)"/>
+<path d="M266.5 184.5L205 78l-61.5 106.5L205 363l61.5-178.5z" fill="url(#g2)"/>
+</svg>
