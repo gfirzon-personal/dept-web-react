@@ -1,38 +1,29 @@
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TopMenu from './components/TopMenu';
+import Home from './pages/Home';
+import Vendors from './pages/Vendors';
+import Products from './pages/Products';
+import About from './pages/About';
+import Contact from './pages/Contact';
 
 export default function App() {
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#f7f7f8',
-      fontFamily: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto'
-    }}>
-      <TopMenu />
-      
+    <Router>
       <div style={{
-        display: 'grid',
-        placeItems: 'center',
-        minHeight: 'calc(100vh - 64px)',
-        padding: '2rem'
+        minHeight: '100vh',
+        background: '#f7f7f8',
+        fontFamily: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto'
       }}>
-        <div style={{
-          background: 'white',
-          borderRadius: '1rem',
-          padding: '2rem 2.5rem',
-          boxShadow: '0 10px 25px rgba(0,0,0,0.06)',
-          border: '1px solid #eaeaea',
-          textAlign: 'center'
-        }}>
-          <h1 style={{ fontSize: '2rem', margin: 0 }}>dept-web-react</h1>
-          <p style={{ color: '#666', marginTop: '0.5rem' }}>
-            Vite + React (JavaScript) starter
-          </p>
-          <a href="https://vitejs.dev" target="_blank" rel="noreferrer"
-             style={{ display: 'inline-block', marginTop: '1rem', textDecoration: 'none' }}>
-            Learn more about Vite →
-          </a>
-        </div>
+        <TopMenu />
+        
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/vendors" element={<Vendors />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/contact" element={<Contact />} />
+        </Routes>
       </div>
-    </div>
-  )
+    </Router>
+  );
 }
