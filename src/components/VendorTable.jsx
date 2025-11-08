@@ -1,19 +1,25 @@
 // src/components/VendorTable.jsx
 import Dropdown from 'react-bootstrap/Dropdown';
 
-export default function VendorTable({ vendors }) {
-  const handleAction = (action, vendor) => {
+export default function VendorTable({ config }) {
+  const {
+    data = [],
+    columns = ['VendorID', 'VendorName', 'VendorPhone', 'Email'],
+    actions = null
+  } = config || {};
+
+  const handleAction = (action, item) => {
     switch (action) {
       case 'edit':
-        console.log('Edit vendor:', vendor);
+        console.log('Edit vendor:', item);
         // Add your edit logic here
         break;
       case 'details':
-        console.log('View details:', vendor);
+        console.log('View details:', item);
         // Add your details logic here
         break;
       case 'delete':
-        console.log('Delete vendor:', vendor);
+        console.log('Delete vendor:', item);
         // Add your delete logic here
         break;
       default:
@@ -21,8 +27,16 @@ export default function VendorTable({ vendors }) {
     }
   };
 
-  if (vendors.length === 0) {
-    return <p className="text-muted">No vendors found.</p>;
+  // Column configuration
+  const columnConfig = {
+    VendorID: { label: 'ID', field: 'VendorID' },
+    VendorName: { label: 'Vendor Name', field: 'VendorName' },
+    VendorPhone: { label: 'Phone', field: 'VendorPhone' },
+    Email: { label: 'Email', field: 'Email' }
+  };
+
+  if (data.length === 0) {
+    return <p className="text-muted">No data found.</p>;
   }
 
   return (
@@ -30,45 +44,54 @@ export default function VendorTable({ vendors }) {
       <table className="table table-striped table-hover">
         <thead className="table-dark">
           <tr>
-            <th>ID</th>
-            <th>Vendor Name</th>
-            <th>Phone</th>
-            <th>Email</th>
-            <th>Actions</th>
+            {columns.map((col) => (
+              <th key={col}>{columnConfig[col]?.label || col}</th>
+            ))}
+            {actions && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
-          {vendors.map((vendor) => (
-            <tr key={vendor.VendorID}>
-              <td>{vendor.VendorID}</td>
-              <td>{vendor.VendorName}</td>
-              <td>{vendor.VendorPhone}</td>
-              <td>{vendor.Email}</td>
-              <td>
-                <Dropdown>
-                  <Dropdown.Toggle variant="secondary" size="sm">
-                    Actions
-                  </Dropdown.Toggle>
-                  <Dropdown.Menu>
-                    <Dropdown.Item onClick={() => handleAction('edit', vendor)}>
-                      <i className="bi bi-pencil-square me-2"></i>
-                      Edit
-                    </Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleAction('details', vendor)}>
-                      <i className="bi bi-info-circle me-2"></i>
-                      Details
-                    </Dropdown.Item>
-                    <Dropdown.Divider />
-                    <Dropdown.Item 
-                      onClick={() => handleAction('delete', vendor)}
-                      className="text-danger"
-                    >
-                      <i className="bi bi-trash me-2"></i>
-                      Delete
-                    </Dropdown.Item>
-                  </Dropdown.Menu>
-                </Dropdown>
-              </td>
+          {data.map((item) => (
+            <tr key={item.VendorID}>
+              {columns.map((col) => {
+                const field = columnConfig[col]?.field;
+                return <td key={col}>{field ? item[field] : ''}</td>;
+              })}
+              {actions && (
+                <td>
+                  <Dropdown>
+                    <Dropdown.Toggle variant="secondary" size="sm">
+                      Actions
+                    </Dropdown.Toggle>
+                    <Dropdown.Menu>
+                      {actions.includes('edit') && (
+                        <Dropdown.Item onClick={() => handleAction('edit', item)}>
+                          <i className="bi bi-pencil-square me-2"></i>
+                          Edit
+                        </Dropdown.Item>
+                      )}
+                      {actions.includes('details') && (
+                        <Dropdown.Item onClick={() => handleAction('details', item)}>
+                          <i className="bi bi-info-circle me-2"></i>
+                          Details
+                        </Dropdown.Item>
+                      )}
+                      {(actions.includes('delete') && (actions.includes('edit') || actions.includes('details'))) && (
+                        <Dropdown.Divider />
+                      )}
+                      {actions.includes('delete') && (
+                        <Dropdown.Item 
+                          onClick={() => handleAction('delete', item)}
+                          className="text-danger"
+                        >
+                          <i className="bi bi-trash me-2"></i>
+                          Delete
+                        </Dropdown.Item>
+                      )}
+                    </Dropdown.Menu>
+                  </Dropdown>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

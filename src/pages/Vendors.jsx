@@ -24,14 +24,21 @@ export default function Vendors() {
     loadVendors();
   }, []);
 
+  // Define table configuration
+  const tableConfig = {
+    data: vendors,
+    columns: ['VendorID', 'VendorName', 'VendorPhone', 'Email'],
+    actions: ['edit', 'details', 'delete']
+  };
+
   return (
     <div className="container mt-5">
       <h1>Vendors</h1>
-      
+
       <div className="d-flex justify-content-end mb-2">
-        <button 
-          id="refreshBtn" 
-          className="btn btn-outline-secondary" 
+        <button
+          id="refreshBtn"
+          className="btn btn-outline-secondary"
           title="Refresh"
           onClick={loadVendors}
           disabled={loading}
@@ -53,7 +60,7 @@ export default function Vendors() {
           </div>
         </div>
       ) : (
-        <VendorTable vendors={vendors} />
+        <VendorTable config={tableConfig} />
       )}
     </div>
   );
