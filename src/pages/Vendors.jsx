@@ -1,20 +1,18 @@
 import { useState, useEffect } from 'react';
+import { fetchVendors } from '../services/vendorService';
+import VendorTable from '../components/VendorTable';
 
 export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchVendors = async () => {
+  const loadVendors = async () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('http://127.0.0.1:8000/vendors');
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setVendors(data.vendors);
+      const data = await fetchVendors();
+      setVendors(data);
     } catch (err) {
       setError(err.message);
     } finally {
@@ -23,7 +21,7 @@ export default function Vendors() {
   };
 
   useEffect(() => {
-    fetchVendors();
+    loadVendors();
   }, []);
 
   return (
@@ -35,7 +33,7 @@ export default function Vendors() {
           id="refreshBtn" 
           className="btn btn-outline-secondary" 
           title="Refresh"
-          onClick={fetchVendors}
+          onClick={loadVendors}
           disabled={loading}
         >
           <i className={`bi bi-arrow-clockwise ${loading ? 'spinner-border spinner-border-sm' : ''}`}></i>
@@ -54,31 +52,8 @@ export default function Vendors() {
             <span className="visually-hidden">Loading...</span>
           </div>
         </div>
-      ) : vendors.length === 0 ? (
-        <p className="text-muted">No vendors found.</p>
       ) : (
-        <div className="table-responsive">
-          <table className="table table-striped table-hover">
-            <thead className="table-dark">
-              <tr>
-                <th>ID</th>
-                <th>Vendor Name</th>
-                <th>Phone</th>
-                <th>Email</th>
-              </tr>
-            </thead>
-            <tbody>
-              {vendors.map((vendor) => (
-                <tr key={vendor.VendorID}>
-                  <td>{vendor.VendorID}</td>
-                  <td>{vendor.VendorName}</td>
-                  <td>{vendor.VendorPhone}</td>
-                  <td>{vendor.Email}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+        <VendorTable vendors={vendors} />
       )}
     </div>
   );
