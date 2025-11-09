@@ -7,3 +7,22 @@ body { background: #f7f7f8; color: #111; }
   body { background: #0b0b0c; color: #fafafa; }
 }
 a { color: inherit; }
+
+/* Action link styles */
+a.action-link {
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-block;
+  transition: background-color 0.2s;
+  background-color: transparent;
+}
+
+a.action-link:hover:not(.disabled) {
+  background-color: #e9ecef !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  a.action-link:hover:not(.disabled) {
+    background-color: #2d2d2d !important;
+  }
+}

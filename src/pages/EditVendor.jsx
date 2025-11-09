@@ -1,7 +1,8 @@
 // src/pages/EditVendor.jsx
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchVendorById, updateVendor } from '../services/vendorService';
+import { fetchVendorById, updateVendor, deleteVendor } from '../services/vendorService';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function EditVendor() {
   const { id } = useParams();
@@ -9,6 +10,7 @@ export default function EditVendor() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [vendor, setVendor] = useState({
     VendorID: '',
     VendorName: '',
@@ -63,6 +65,25 @@ export default function EditVendor() {
     navigate('/vendors');
   };
 
+  const handleDelete = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteVendor(vendor.VendorID);
+      setShowDeleteModal(false);
+      navigate('/vendors');
+    } catch (err) {
+      setError(`Failed to delete vendor: ${err.message}`);
+      setShowDeleteModal(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+  };
+
   if (loading) {
     return (
       <div className="container mt-5">
@@ -79,7 +100,7 @@ export default function EditVendor() {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="d-flex justify-content-between align-items-center mb-3">
             <h1>Edit Vendor</h1>
             <button
               className="btn btn-outline-secondary"
@@ -89,6 +110,26 @@ export default function EditVendor() {
               <i className="bi bi-arrow-left me-2"></i>
               Back to Vendors
             </button>
+          </div>
+
+          {/* Action Buttons Row - Azure Portal Style */}
+          <div className="mb-3 p-2 border-bottom">
+            <a
+              href="#"
+              className={`action-link text-danger text-decoration-none ${saving ? 'disabled' : ''}`}
+              onClick={(e) => {
+                e.preventDefault();
+                if (!saving) handleDelete();
+              }}
+              style={{
+                cursor: saving ? 'not-allowed' : 'pointer',
+                opacity: saving ? 0.5 : 1
+              }}
+              title="Delete Vendor"
+            >
+              <i className="bi bi-trash me-1"></i>
+              Delete
+            </a>
           </div>
 
           {error && (
@@ -192,6 +233,18 @@ export default function EditVendor() {
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+        title="Delete Vendor"
+        message={`Are you sure you want to delete vendor "${vendor.VendorName}"?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmButtonClass="btn-danger"
+      />
     </div>
   );
 }
