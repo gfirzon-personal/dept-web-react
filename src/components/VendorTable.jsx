@@ -86,7 +86,7 @@ export default function VendorTable({ config }) {
   };
 
   return (
-    <div>
+    <div style={{ paddingBottom: '150px' }}>
       {/* Rows per page selector */}
       <div className="d-flex justify-content-between align-items-center mb-2">
         <div className="d-flex align-items-center">
@@ -107,7 +107,7 @@ export default function VendorTable({ config }) {
       </div>
 
       <div className="table-responsive">
-        <table className="table table-striped table-hover">
+        <table className="table table-striped table-hover" style={{ marginBottom: '150px' }}>
           <thead className="table-dark">
             <tr>
               {columns.map((col) => (
@@ -117,7 +117,7 @@ export default function VendorTable({ config }) {
             </tr>
           </thead>
           <tbody>
-            {paginatedData.map((item) => (
+            {paginatedData.map((item, rowIndex) => (
               <tr key={item[keyField]}>
                 {columns.map((col) => {
                   const field = columnConfig[col]?.field;
@@ -125,7 +125,7 @@ export default function VendorTable({ config }) {
                 })}
                 {actions && actions.length > 0 && (
                   <td>
-                    <Dropdown>
+                    <Dropdown align="end" drop={rowIndex >= paginatedData.length - 2 ? "up" : "down"}>
                       <Dropdown.Toggle variant="secondary" size="sm">
                         Actions
                       </Dropdown.Toggle>

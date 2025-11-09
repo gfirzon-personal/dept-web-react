@@ -2,6 +2,7 @@
 npm install
 ```
 
+## Run the app in dev mode locally
 ```sh
 npm run dev
 ```
