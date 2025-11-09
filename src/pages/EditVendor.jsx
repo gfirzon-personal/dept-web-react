@@ -81,7 +81,7 @@ export default function EditVendor() {
         <div className="col-md-8 offset-md-2">
           <div className="d-flex justify-content-between align-items-center mb-4">
             <h1>Edit Vendor</h1>
-            <button 
+            <button
               className="btn btn-outline-secondary"
               onClick={handleCancel}
               disabled={saving}
@@ -101,18 +101,9 @@ export default function EditVendor() {
             <div className="card-body">
               <form onSubmit={handleSubmit}>
                 <div className="mb-3">
-                  <label htmlFor="VendorID" className="form-label">
-                    Vendor ID
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    id="VendorID"
-                    name="VendorID"
-                    value={vendor.VendorID}
-                    readOnly
-                    disabled
-                  />
+                  <div className="mb-3 text-end">
+                    <span className="fw-bold">KEY:</span> <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>{vendor.VendorID}</span>
+                  </div>
                 </div>
 
                 <div className="mb-3">
@@ -126,9 +117,11 @@ export default function EditVendor() {
                     name="VendorName"
                     value={vendor.VendorName}
                     onChange={handleChange}
+                    maxLength={50}
                     required
                     disabled={saving}
                   />
+                  <div className="form-text">Maximum 50 characters</div>
                 </div>
 
                 <div className="mb-3">
@@ -151,7 +144,7 @@ export default function EditVendor() {
 
                 <div className="mb-3">
                   <label htmlFor="Email" className="form-label">
-                    Email
+                    Email <span className="text-danger">*</span>
                   </label>
                   <input
                     type="email"
@@ -160,13 +153,16 @@ export default function EditVendor() {
                     name="Email"
                     value={vendor.Email}
                     onChange={handleChange}
+                    maxLength={50}
+                    required
                     disabled={saving}
                   />
+                  <div className="form-text">Maximum 50 characters</div>
                 </div>
 
                 <div className="d-flex gap-2">
-                  <button 
-                    type="submit" 
+                  <button
+                    type="submit"
                     className="btn btn-primary"
                     disabled={saving}
                   >
@@ -182,8 +178,8 @@ export default function EditVendor() {
                       </>
                     )}
                   </button>
-                  <button 
-                    type="button" 
+                  <button
+                    type="button"
                     className="btn btn-secondary"
                     onClick={handleCancel}
                     disabled={saving}
