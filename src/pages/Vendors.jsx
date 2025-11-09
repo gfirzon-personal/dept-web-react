@@ -52,9 +52,24 @@ export default function Vendors() {
       Email: { label: 'Email', field: 'Email' }
     },
     actions: [
-      { name: 'edit', handler: handleEdit },
-      { name: 'details', handler: handleDetails },
-      { name: 'delete', handler: handleDelete }
+      {
+        title: "Details",
+        icon: 'bi-info-circle',
+        className: 'text-success',
+        onClick: (data) => { /* handler */ }
+      },
+      {
+        title: "Edit",
+        icon: 'bi-pencil-square',
+        className: 'text-primary',
+        onClick: (data) => { navigate(`/vendors/edit/${data.VendorID}`) }
+      },      
+      {
+        title: "Delete Vendor",
+        icon: 'bi-trash',
+        className: 'text-danger',
+        onClick: (data) => { /* handler */ }
+      }
     ],
     rowsPerPage: 10,  // Optional, defaults to 10
     rowsPerPageOptions: [5, 10, 25, 50, 100]  // Optional, defaults to [5, 10, 25, 50, 100]    

@@ -59,13 +59,6 @@ export default function VendorTable({ config }) {
     setCurrentPage(1); // Reset to first page when changing items per page
   };
 
-  // Action configuration for icons and styles
-  const actionConfig = {
-    edit: { icon: 'bi-pencil-square', label: 'Edit', className: '' },
-    details: { icon: 'bi-info-circle', label: 'Details', className: '' },
-    delete: { icon: 'bi-trash', label: 'Delete', className: 'text-danger' }
-  };
-
   // Generate page numbers to display
   const getPageNumbers = () => {
     const pages = [];
@@ -131,25 +124,17 @@ export default function VendorTable({ config }) {
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {actions.map((action, index) => {
-                          const config = actionConfig[action.name] || { 
-                            icon: 'bi-gear', 
-                            label: action.name, 
-                            className: '' 
-                          };
-                          
-                          const needsDivider = 
-                            action.name === 'delete' && 
-                            index > 0;
+                          const needsDivider = action.title?.toLowerCase().includes('delete') && index > 0;
 
                           return (
-                            <div key={action.name}>
+                            <div key={index}>
                               {needsDivider && <Dropdown.Divider />}
                               <Dropdown.Item 
-                                onClick={() => action.handler(item)}
-                                className={config.className}
+                                onClick={() => action.onClick(item)}
+                                className={action.className || ''}
                               >
-                                <i className={`bi ${config.icon} me-2`}></i>
-                                {config.label}
+                                {action.icon && <i className={`bi ${action.icon} me-2`}></i>}
+                                {action.title}
                               </Dropdown.Item>
                             </div>
                           );
