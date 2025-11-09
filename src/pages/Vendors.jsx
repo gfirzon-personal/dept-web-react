@@ -24,6 +24,22 @@ export default function Vendors() {
     loadVendors();
   }, []);
 
+  // Define action handlers
+  const handleEdit = (vendor) => {
+    console.log('Edit vendor:', vendor);
+    // Add your edit logic here
+  };
+
+  const handleDetails = (vendor) => {
+    console.log('View details:', vendor);
+    // Add your details logic here
+  };
+
+  const handleDelete = (vendor) => {
+    console.log('Delete vendor:', vendor);
+    // Add your delete logic here
+  };
+
   // Define table configuration
   const tableConfig = {
     data: vendors,
@@ -34,7 +50,11 @@ export default function Vendors() {
       VendorPhone: { label: 'Phone', field: 'VendorPhone' },
       Email: { label: 'Email', field: 'Email' }
     },
-    actions: ['edit', 'details', 'delete']
+    actions: [
+      { name: 'edit', handler: handleEdit },
+      { name: 'details', handler: handleDetails },
+      { name: 'delete', handler: handleDelete }
+    ]
   };
 
   return (
