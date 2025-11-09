@@ -19,6 +19,21 @@ export const fetchVendorById = async (id) => {
   return data;
 };
 
+export const createVendor = async (vendorData) => {
+  const response = await fetch(`${API_BASE_URL}/vendors`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(vendorData),
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
+};
+
 export const updateVendor = async (vendorData) => {
   const response = await fetch(`${API_BASE_URL}/vendors`, {
     method: 'PUT',
