@@ -4,9 +4,13 @@ import Dropdown from 'react-bootstrap/Dropdown';
 export default function VendorTable({ config }) {
   const {
     data = [],
-    columns = ['VendorID', 'VendorName', 'VendorPhone', 'Email'],
+    columnConfig = {},
+    keyField,
     actions = null
   } = config || {};
+
+  // Derive columns from columnConfig keys
+  const columns = Object.keys(columnConfig);
 
   const handleAction = (action, item) => {
     switch (action) {
@@ -27,13 +31,14 @@ export default function VendorTable({ config }) {
     }
   };
 
-  // Column configuration
-  const columnConfig = {
-    VendorID: { label: 'ID', field: 'VendorID' },
-    VendorName: { label: 'Vendor Name', field: 'VendorName' },
-    VendorPhone: { label: 'Phone', field: 'VendorPhone' },
-    Email: { label: 'Email', field: 'Email' }
-  };
+  // Check if keyField is provided
+  if (!keyField) {
+    return (
+      <div className="alert alert-danger" role="alert">
+        Error: keyField is required in the table configuration.
+      </div>
+    );
+  }
 
   if (data.length === 0) {
     return <p className="text-muted">No data found.</p>;
@@ -52,7 +57,7 @@ export default function VendorTable({ config }) {
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.VendorID}>
+            <tr key={item[keyField]}>
               {columns.map((col) => {
                 const field = columnConfig[col]?.field;
                 return <td key={col}>{field ? item[field] : ''}</td>;

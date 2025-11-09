@@ -27,7 +27,13 @@ export default function Vendors() {
   // Define table configuration
   const tableConfig = {
     data: vendors,
-    columns: ['VendorID', 'VendorName', 'VendorPhone', 'Email'],
+    keyField: 'VendorID',
+    columnConfig: {
+      VendorID: { label: 'ID', field: 'VendorID' },
+      VendorName: { label: 'Vendor Name', field: 'VendorName' },
+      VendorPhone: { label: 'Phone', field: 'VendorPhone' },
+      Email: { label: 'Email', field: 'Email' }
+    },
     actions: ['edit', 'details', 'delete']
   };
 
