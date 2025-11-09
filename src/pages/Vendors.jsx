@@ -1,16 +1,30 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchVendors, deleteVendor } from '../services/vendorService';
+import { fetchVendors } from '../services/vendorService';
 import VendorTable from '../components/VendorTable';
 import ConfirmModal from '../components/ConfirmModal';
+import { useVendorDelete } from '../hooks/useVendorDelete';
 
 export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [vendorToDelete, setVendorToDelete] = useState(null);
   const navigate = useNavigate();
+
+  const {
+    showDeleteModal,
+    vendorToDelete,
+    handleDelete,
+    confirmDelete,
+    cancelDelete
+  } = useVendorDelete({
+    onSuccess: async () => {
+      await loadVendors();
+    },
+    onError: (err) => {
+      setError(`Failed to delete vendor: ${err.message}`);
+    }
+  });
 
   const loadVendors = async () => {
     setLoading(true);
@@ -37,30 +51,6 @@ export default function Vendors() {
   const handleDetails = (vendor) => {
     console.log('View details:', vendor);
     // Add your details logic here
-  };
-
-  const handleDelete = (vendor) => {
-    setVendorToDelete(vendor);
-    setShowDeleteModal(true);
-  };
-
-  const confirmDelete = async () => {
-    try {
-      await deleteVendor(vendorToDelete.VendorID);
-      setShowDeleteModal(false);
-      setVendorToDelete(null);
-      // Refresh the vendors list after successful deletion
-      await loadVendors();
-    } catch (err) {
-      setError(`Failed to delete vendor: ${err.message}`);
-      setShowDeleteModal(false);
-      setVendorToDelete(null);
-    }
-  };
-
-  const cancelDelete = () => {
-    setShowDeleteModal(false);
-    setVendorToDelete(null);
   };
 
   // Define table configuration
