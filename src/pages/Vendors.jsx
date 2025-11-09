@@ -55,7 +55,9 @@ export default function Vendors() {
       { name: 'edit', handler: handleEdit },
       { name: 'details', handler: handleDetails },
       { name: 'delete', handler: handleDelete }
-    ]
+    ],
+    rowsPerPage: 10,  // Optional, defaults to 10
+    rowsPerPageOptions: [5, 10, 25, 50, 100]  // Optional, defaults to [5, 10, 25, 50, 100]    
   };
 
   return (
