@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { fetchVendors } from '../services/vendorService';
 import VendorTable from '../components/VendorTable';
 
@@ -6,6 +7,7 @@ export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   const loadVendors = async () => {
     setLoading(true);
@@ -26,8 +28,7 @@ export default function Vendors() {
 
   // Define action handlers
   const handleEdit = (vendor) => {
-    console.log('Edit vendor:', vendor);
-    // Add your edit logic here
+    navigate(`/vendors/edit/${vendor.VendorID}`);
   };
 
   const handleDetails = (vendor) => {

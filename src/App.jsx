@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import TopMenu from './components/TopMenu';
 import Home from './pages/Home';
 import Vendors from './pages/Vendors';
+import EditVendor from './pages/EditVendor';
 import Products from './pages/Products';
 import About from './pages/About';
 import Contact from './pages/Contact';
@@ -19,6 +20,7 @@ export default function App() {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/vendors" element={<Vendors />} />
+          <Route path="/vendors/edit/:id" element={<EditVendor />} />
           <Route path="/products" element={<Products />} />
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
