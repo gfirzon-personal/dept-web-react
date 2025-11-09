@@ -75,7 +75,7 @@ export default function Vendors() {
         icon: 'bi-pencil-square',
         className: 'text-primary',
         onClick: (data) => { navigate(`/vendors/edit/${data.VendorID}`) }
-      },      
+      },
       {
         title: "Delete Vendor",
         icon: 'bi-trash',
@@ -84,23 +84,46 @@ export default function Vendors() {
       }
     ],
     rowsPerPage: 10,
-    rowsPerPageOptions: [5, 10, 25, 50, 100]    
+    rowsPerPageOptions: [5, 10, 25, 50, 100]
   };
 
   return (
     <div className="container mt-5">
       <h1>Vendors</h1>
 
-      <div className="d-flex justify-content-end mb-2">
-        <button
-          id="refreshBtn"
-          className="btn btn-outline-secondary"
-          title="Refresh"
-          onClick={loadVendors}
-          disabled={loading}
-        >
-          <i className={`bi bi-arrow-clockwise ${loading ? 'spinner-border spinner-border-sm' : ''}`}></i>
-        </button>
+      {/* Action Buttons Row - Azure Portal Style */}
+      <div className="mb-3 p-2 border-bottom">
+        <div className="d-flex gap-3">
+          <a
+            href="#"
+            className="action-link text-primary text-decoration-none"
+            onClick={(e) => {
+              e.preventDefault();
+              navigate('/vendors/add');
+            }}
+            style={{ cursor: 'pointer' }}
+            title="Add Vendor"
+          >
+            <i className="bi bi-plus me-1"></i>
+            Add
+          </a>
+          <a
+            href="#"
+            className="action-link text-primary text-decoration-none"
+            onClick={(e) => {
+              e.preventDefault();
+              if (!loading) loadVendors();
+            }}
+            style={{
+              cursor: loading ? 'not-allowed' : 'pointer',
+              opacity: loading ? 0.5 : 1
+            }}
+            title="Refresh"
+          >
+            <i className={`bi bi-arrow-clockwise me-1 ${loading ? 'spinner-border spinner-border-sm' : ''}`}></i>
+            Refresh
+          </a>
+        </div>
       </div>
 
       {error && (
