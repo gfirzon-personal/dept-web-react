@@ -84,7 +84,17 @@ export default function Vendors() {
 
   return (
     <div className="container mt-5">
-      <h1>Vendors</h1>
+      <div className="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h1 className="mb-1 fs-3">Vendors</h1>
+          <p className="text-muted mb-0">
+            Browse and search vendor records
+          </p>
+        </div>
+        <div className="text-muted">
+          <small>{vendors.length} total</small>
+        </div>
+      </div>
 
       {/* Action Buttons Row - Azure Portal Style */}
       <div className="mb-3 p-2 border-bottom">
@@ -124,9 +134,9 @@ export default function Vendors() {
       {(error || deleteError) && (
         <div className="alert alert-danger alert-dismissible fade show" role="alert">
           Error: {error || deleteError}
-          <button 
-            type="button" 
-            className="btn-close" 
+          <button
+            type="button"
+            className="btn-close"
             onClick={() => {
               clearError();
               setDeleteError(null);

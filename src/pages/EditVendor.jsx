@@ -9,7 +9,7 @@ export default function EditVendor() {
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
   const { getVendor, createVendor, updateVendor, deleteVendor } = useVendors();
-  
+
   const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
@@ -111,8 +111,13 @@ export default function EditVendor() {
     <div className="container mt-5">
       <div className="row">
         <div className="col-md-8 offset-md-2">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <h1>{isEditMode ? 'Edit Vendor' : 'Add Vendor'}</h1>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <div>
+              <h1 className="mb-1 fs-3">{isEditMode ? 'Edit Vendor' : 'Add Vendor'}</h1>
+              <p className="text-muted mb-0">
+                {isEditMode ? 'Update vendor information' : 'Create a new vendor record'}
+              </p>
+            </div>
             <button
               className="btn btn-outline-secondary"
               onClick={handleCancel}
