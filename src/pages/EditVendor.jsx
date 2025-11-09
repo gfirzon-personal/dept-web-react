@@ -1,14 +1,15 @@
 // src/pages/EditVendor.jsx
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchVendorById, updateVendor } from '../services/vendorService';
+import { fetchVendorById, updateVendor, createVendor } from '../services/vendorService';
 import ConfirmModal from '../components/ConfirmModal';
 import { useVendorDelete } from '../hooks/useVendorDelete';
 
 export default function EditVendor() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(true);
+  const isEditMode = Boolean(id); // Determine if we're editing or creating
+  const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [vendor, setVendor] = useState({
@@ -34,7 +35,9 @@ export default function EditVendor() {
   });
 
   useEffect(() => {
-    loadVendor();
+    if (isEditMode) {
+      loadVendor();
+    }
   }, [id]);
 
   const loadVendor = async () => {
@@ -68,7 +71,13 @@ export default function EditVendor() {
     setSaving(true);
     setError(null);
     try {
-      await updateVendor(vendor);
+      if (isEditMode) {
+        await updateVendor(vendor);
+      } else {
+        // Don't send VendorID when creating a new vendor
+        const { VendorID, ...vendorData } = vendor;
+        await createVendor(vendorData);
+      }
       navigate('/vendors');
     } catch (err) {
       setError(err.message);
@@ -97,7 +106,7 @@ export default function EditVendor() {
       <div className="row">
         <div className="col-md-8 offset-md-2">
           <div className="d-flex justify-content-between align-items-center mb-3">
-            <h1>Edit Vendor</h1>
+            <h1>{isEditMode ? 'Edit Vendor' : 'Add Vendor'}</h1>
             <button
               className="btn btn-outline-secondary"
               onClick={handleCancel}
@@ -109,24 +118,26 @@ export default function EditVendor() {
           </div>
 
           {/* Action Buttons Row - Azure Portal Style */}
-          <div className="mb-3 p-2 border-bottom">
-            <a
-              href="#"
-              className={`action-link text-danger text-decoration-none ${saving ? 'disabled' : ''}`}
-              onClick={(e) => {
-                e.preventDefault();
-                if (!saving) handleDelete(vendor);
-              }}
-              style={{
-                cursor: saving ? 'not-allowed' : 'pointer',
-                opacity: saving ? 0.5 : 1
-              }}
-              title="Delete Vendor"
-            >
-              <i className="bi bi-trash me-1"></i>
-              Delete
-            </a>
-          </div>
+          {isEditMode && (
+            <div className="mb-3 p-2 border-bottom">
+              <a
+                href="#"
+                className={`action-link text-danger text-decoration-none ${saving ? 'disabled' : ''}`}
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (!saving) handleDelete(vendor);
+                }}
+                style={{
+                  cursor: saving ? 'not-allowed' : 'pointer',
+                  opacity: saving ? 0.5 : 1
+                }}
+                title="Delete Vendor"
+              >
+                <i className="bi bi-trash me-1"></i>
+                Delete
+              </a>
+            </div>
+          )}
 
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -137,11 +148,13 @@ export default function EditVendor() {
           <div className="card">
             <div className="card-body">
               <form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                  <div className="mb-3 text-end">
-                    <span className="fw-bold">KEY:</span> <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>{vendor.VendorID}</span>
+                {isEditMode && (
+                  <div className="mb-3">
+                    <div className="mb-3 text-end">
+                      <span className="fw-bold">KEY:</span> <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>{vendor.VendorID}</span>
+                    </div>
                   </div>
-                </div>
+                )}
 
                 <div className="mb-3">
                   <label htmlFor="VendorName" className="form-label">
@@ -206,12 +219,12 @@ export default function EditVendor() {
                     {saving ? (
                       <>
                         <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                        Saving...
+                        {isEditMode ? 'Saving...' : 'Creating...'}
                       </>
                     ) : (
                       <>
                         <i className="bi bi-check-lg me-2"></i>
-                        Save Changes
+                        {isEditMode ? 'Save Changes' : 'Create Vendor'}
                       </>
                     )}
                   </button>
@@ -230,17 +243,19 @@ export default function EditVendor() {
         </div>
       </div>
 
-      {/* Delete Confirmation Modal */}
-      <ConfirmModal
-        isOpen={showDeleteModal}
-        onClose={cancelDelete}
-        onConfirm={confirmDelete}
-        title="Delete Vendor"
-        message={`Are you sure you want to delete vendor "${vendorToDelete?.VendorName}"?`}
-        confirmText="Delete"
-        cancelText="Cancel"
-        confirmButtonClass="btn-danger"
-      />
+      {/* Delete Confirmation Modal - Only show in edit mode */}
+      {isEditMode && (
+        <ConfirmModal
+          isOpen={showDeleteModal}
+          onClose={cancelDelete}
+          onConfirm={confirmDelete}
+          title="Delete Vendor"
+          message={`Are you sure you want to delete vendor "${vendorToDelete?.VendorName}"?`}
+          confirmText="Delete"
+          cancelText="Cancel"
+          confirmButtonClass="btn-danger"
+        />
+      )}
     </div>
   );
 }
