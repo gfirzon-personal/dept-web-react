@@ -1,37 +1,24 @@
 // src/pages/EditVendor.jsx
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchVendorById, updateVendor, createVendor } from '../services/vendorService';
+import { useVendors } from '../contexts/VendorContext';
 import ConfirmModal from '../components/ConfirmModal';
-import { useVendorDelete } from '../hooks/useVendorDelete';
 
 export default function EditVendor() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const isEditMode = Boolean(id); // Determine if we're editing or creating
+  const isEditMode = Boolean(id);
+  const { getVendor, createVendor, updateVendor, deleteVendor } = useVendors();
+  
   const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [vendor, setVendor] = useState({
     VendorID: '',
     VendorName: '',
     VendorPhone: '',
     Email: ''
-  });
-
-  const {
-    showDeleteModal,
-    vendorToDelete,
-    handleDelete,
-    confirmDelete,
-    cancelDelete
-  } = useVendorDelete({
-    onSuccess: () => {
-      navigate('/vendors');
-    },
-    onError: (err) => {
-      setError(`Failed to delete vendor: ${err.message}`);
-    }
   });
 
   useEffect(() => {
@@ -44,7 +31,7 @@ export default function EditVendor() {
     setLoading(true);
     setError(null);
     try {
-      const data = await fetchVendorById(id);
+      const data = await getVendor(id);
       setVendor({
         VendorID: data.VendorID || '',
         VendorName: data.VendorName || '',
@@ -83,6 +70,25 @@ export default function EditVendor() {
       setError(err.message);
       setSaving(false);
     }
+  };
+
+  const handleDelete = () => {
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteVendor(vendor.VendorID);
+      setShowDeleteModal(false);
+      navigate('/vendors');
+    } catch (err) {
+      setError(`Failed to delete vendor: ${err.message}`);
+      setShowDeleteModal(false);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
   };
 
   const handleCancel = () => {
@@ -125,7 +131,7 @@ export default function EditVendor() {
                 className={`action-link text-danger text-decoration-none ${saving ? 'disabled' : ''}`}
                 onClick={(e) => {
                   e.preventDefault();
-                  if (!saving) handleDelete(vendor);
+                  if (!saving) handleDelete();
                 }}
                 style={{
                   cursor: saving ? 'not-allowed' : 'pointer',
@@ -250,7 +256,7 @@ export default function EditVendor() {
           onClose={cancelDelete}
           onConfirm={confirmDelete}
           title="Delete Vendor"
-          message={`Are you sure you want to delete vendor "${vendorToDelete?.VendorName}"?`}
+          message={`Are you sure you want to delete vendor "${vendor.VendorName}"?`}
           confirmText="Delete"
           cancelText="Cancel"
           confirmButtonClass="btn-danger"

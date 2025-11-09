@@ -1,56 +1,51 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchVendors } from '../services/vendorService';
+import { useVendors } from '../contexts/VendorContext';
 import VendorTable from '../components/VendorTable';
 import ConfirmModal from '../components/ConfirmModal';
-import { useVendorDelete } from '../hooks/useVendorDelete';
 
 export default function Vendors() {
-  const [vendors, setVendors] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const navigate = useNavigate();
-
-  const {
-    showDeleteModal,
-    vendorToDelete,
-    handleDelete,
-    confirmDelete,
-    cancelDelete
-  } = useVendorDelete({
-    onSuccess: async () => {
-      await loadVendors();
-    },
-    onError: (err) => {
-      setError(`Failed to delete vendor: ${err.message}`);
-    }
-  });
-
-  const loadVendors = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await fetchVendors();
-      setVendors(data);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { vendors, loading, error, loadVendors, deleteVendor, clearError } = useVendors();
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [vendorToDelete, setVendorToDelete] = useState(null);
+  const [deleteError, setDeleteError] = useState(null);
 
   useEffect(() => {
     loadVendors();
-  }, []);
+  }, [loadVendors]);
 
-  // Define action handlers
-  const handleEdit = (vendor) => {
-    navigate(`/vendors/edit/${vendor.VendorID}`);
+  const handleDelete = (vendor) => {
+    setVendorToDelete(vendor);
+    setShowDeleteModal(true);
+    setDeleteError(null);
   };
 
-  const handleDetails = (vendor) => {
-    console.log('View details:', vendor);
-    // Add your details logic here
+  const confirmDelete = async () => {
+    try {
+      await deleteVendor(vendorToDelete.VendorID);
+      setShowDeleteModal(false);
+      setVendorToDelete(null);
+      setDeleteError(null);
+    } catch (err) {
+      setDeleteError(`Failed to delete vendor: ${err.message}`);
+      setShowDeleteModal(false);
+      setVendorToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setVendorToDelete(null);
+    setDeleteError(null);
+  };
+
+  const handleRefresh = () => {
+    if (!loading) {
+      clearError();
+      setDeleteError(null);
+      loadVendors();
+    }
   };
 
   // Define table configuration
@@ -112,7 +107,7 @@ export default function Vendors() {
             className="action-link text-primary text-decoration-none"
             onClick={(e) => {
               e.preventDefault();
-              if (!loading) loadVendors();
+              handleRefresh();
             }}
             style={{
               cursor: loading ? 'not-allowed' : 'pointer',
@@ -126,9 +121,17 @@ export default function Vendors() {
         </div>
       </div>
 
-      {error && (
-        <div className="alert alert-danger" role="alert">
-          Error loading vendors: {error}
+      {(error || deleteError) && (
+        <div className="alert alert-danger alert-dismissible fade show" role="alert">
+          Error: {error || deleteError}
+          <button 
+            type="button" 
+            className="btn-close" 
+            onClick={() => {
+              clearError();
+              setDeleteError(null);
+            }}
+          ></button>
         </div>
       )}
 
