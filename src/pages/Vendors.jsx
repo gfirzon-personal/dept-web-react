@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchVendors } from '../services/vendorService';
+import { fetchVendors, deleteVendor } from '../services/vendorService';
 import VendorTable from '../components/VendorTable';
+import ConfirmModal from '../components/ConfirmModal';
 
 export default function Vendors() {
   const [vendors, setVendors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [vendorToDelete, setVendorToDelete] = useState(null);
   const navigate = useNavigate();
 
   const loadVendors = async () => {
@@ -37,8 +40,27 @@ export default function Vendors() {
   };
 
   const handleDelete = (vendor) => {
-    console.log('Delete vendor:', vendor);
-    // Add your delete logic here
+    setVendorToDelete(vendor);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async () => {
+    try {
+      await deleteVendor(vendorToDelete.VendorID);
+      setShowDeleteModal(false);
+      setVendorToDelete(null);
+      // Refresh the vendors list after successful deletion
+      await loadVendors();
+    } catch (err) {
+      setError(`Failed to delete vendor: ${err.message}`);
+      setShowDeleteModal(false);
+      setVendorToDelete(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowDeleteModal(false);
+    setVendorToDelete(null);
   };
 
   // Define table configuration
@@ -68,11 +90,11 @@ export default function Vendors() {
         title: "Delete Vendor",
         icon: 'bi-trash',
         className: 'text-danger',
-        onClick: (data) => { /* handler */ }
+        onClick: handleDelete
       }
     ],
-    rowsPerPage: 10,  // Optional, defaults to 10
-    rowsPerPageOptions: [5, 10, 25, 50, 100]  // Optional, defaults to [5, 10, 25, 50, 100]    
+    rowsPerPage: 10,
+    rowsPerPageOptions: [5, 10, 25, 50, 100]    
   };
 
   return (
@@ -106,6 +128,18 @@ export default function Vendors() {
       ) : (
         <VendorTable config={tableConfig} />
       )}
+
+      {/* Delete Confirmation Modal */}
+      <ConfirmModal
+        isOpen={showDeleteModal}
+        onClose={cancelDelete}
+        onConfirm={confirmDelete}
+        title="Delete Vendor"
+        message={`Are you sure you want to delete vendor "${vendorToDelete?.VendorName}"?`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        confirmButtonClass="btn-danger"
+      />
     </div>
   );
 }

@@ -33,3 +33,14 @@ export const updateVendor = async (vendorData) => {
   const data = await response.json();
   return data;
 };
+
+export const deleteVendor = async (id) => {
+  const response = await fetch(`${API_BASE_URL}/vendors/${id}`, {
+    method: 'DELETE',
+  });
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  const data = await response.json();
+  return data;
+};
