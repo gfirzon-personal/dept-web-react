@@ -32,6 +32,8 @@ export default function EditVendor() {
     setError(null);
     try {
       const data = await getVendor(id);
+      console.log('Fetched vendor:', data); // <-- Add this
+      //console.log("VendorID:", data.vendor.VendorID); // <-- And this
       setVendor({
         VendorID: data.VendorID || '',
         VendorName: data.VendorName || '',
@@ -162,7 +164,10 @@ export default function EditVendor() {
                 {isEditMode && (
                   <div className="mb-3">
                     <div className="mb-3 text-end">
-                      <span className="fw-bold">KEY:</span> <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>{vendor.VendorID}</span>
+                      <span className="fw-bold">KEY:</span> 
+                      <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>
+                        {vendor.VendorID}
+                      </span>
                     </div>
                   </div>
                 )}
