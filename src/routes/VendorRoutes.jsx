@@ -1,6 +1,6 @@
-import Vendors from './pages/Vendors';
-import EditVendor from './pages/EditVendor';
 import { Route } from 'react-router-dom';
+import Vendors from '../pages/Vendors';
+import EditVendor from '../pages/EditVendor';
 
 export const vendorRoutes = (
   <>

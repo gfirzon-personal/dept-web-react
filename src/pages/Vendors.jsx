@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useVendors } from '../contexts/VendorContext';
-import VendorTable from '../components/VendorTable';
+import PaginatedTable from '../components/PaginatedTable';
 import ConfirmModal from '../components/ConfirmModal';
 
 export default function Vendors() {
@@ -11,6 +11,8 @@ export default function Vendors() {
   const [vendorToDelete, setVendorToDelete] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
 
+  // This effect runs the loadVendors function when the component mounts 
+  // or whenever the loadVendors reference changes.
   useEffect(() => {
     loadVendors();
   }, [loadVendors]);
@@ -152,7 +154,7 @@ export default function Vendors() {
           </div>
         </div>
       ) : (
-        <VendorTable config={tableConfig} />
+        <PaginatedTable config={tableConfig} />
       )}
 
       {/* Delete Confirmation Modal */}
