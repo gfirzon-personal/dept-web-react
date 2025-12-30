@@ -1,0 +1,115 @@
+{
+    "app": "My FastAPI App",
+    "version": "1.0.0",
+    "datetime_iso": "2025-12-30T14:33:52.636935",
+    "products": [
+        {
+            "ProductID": 1,
+            "ProductName": "Milk 2%",
+            "ProductDescription": "Delicious 2%",
+            "UnitsInStock": 100,
+            "SellPrice": 5.99,
+            "DiscountPercentage": 2,
+            "UnitsMax": 500
+        },
+        {
+            "ProductID": 2,
+            "ProductName": "Bread",
+            "ProductDescription": "White",
+            "UnitsInStock": 78,
+            "SellPrice": 2.99,
+            "DiscountPercentage": 5,
+            "UnitsMax": 150
+        },
+        {
+            "ProductID": 3,
+            "ProductName": "Butter",
+            "ProductDescription": "Unsweeted",
+            "UnitsInStock": 158,
+            "SellPrice": 5.99,
+            "DiscountPercentage": 3,
+            "UnitsMax": 150
+        },
+        {
+            "ProductID": 4,
+            "ProductName": "Tea",
+            "ProductDescription": "Green",
+            "UnitsInStock": 45,
+            "SellPrice": 4.5,
+            "DiscountPercentage": 2,
+            "UnitsMax": 78
+        },
+        {
+            "ProductID": 5,
+            "ProductName": "Apple",
+            "ProductDescription": "Gala",
+            "UnitsInStock": 785,
+            "SellPrice": 1.25,
+            "DiscountPercentage": 7,
+            "UnitsMax": 7478
+        },
+        {
+            "ProductID": 6,
+            "ProductName": "Apple",
+            "ProductDescription": "Envy",
+            "UnitsInStock": 12,
+            "SellPrice": 1.45,
+            "DiscountPercentage": 2,
+            "UnitsMax": 1236
+        },
+        {
+            "ProductID": 7,
+            "ProductName": "Orange",
+            "ProductDescription": "Sweet",
+            "UnitsInStock": 236,
+            "SellPrice": 2.56,
+            "DiscountPercentage": 2,
+            "UnitsMax": 256
+        },
+        {
+            "ProductID": 8,
+            "ProductName": "Milk Whole",
+            "ProductDescription": "Whole Milk",
+            "UnitsInStock": 458,
+            "SellPrice": 1.98,
+            "DiscountPercentage": 1,
+            "UnitsMax": 1236
+        },
+        {
+            "ProductID": 9,
+            "ProductName": "Lana Cream",
+            "ProductDescription": "Hand Lotion",
+            "UnitsInStock": 900,
+            "SellPrice": 10.99,
+            "DiscountPercentage": 0,
+            "UnitsMax": 1000
+        },
+        {
+            "ProductID": 10,
+            "ProductName": "Shampoo",
+            "ProductDescription": "Normal hair",
+            "UnitsInStock": 333,
+            "SellPrice": 12.99,
+            "DiscountPercentage": 0,
+            "UnitsMax": 450
+        },
+        {
+            "ProductID": 11,
+            "ProductName": "Cottage Cheese",
+            "ProductDescription": "low fat 1%",
+            "UnitsInStock": 100,
+            "SellPrice": 5.99,
+            "DiscountPercentage": 0,
+            "UnitsMax": 125
+        },
+        {
+            "ProductID": 12,
+            "ProductName": "cheburashka",
+            "ProductDescription": "childrensPlay",
+            "UnitsInStock": 100,
+            "SellPrice": 19.99,
+            "DiscountPercentage": 0,
+            "UnitsMax": 1000
+        }
+    ]
+}

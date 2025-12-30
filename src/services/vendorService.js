@@ -16,7 +16,7 @@ export const fetchVendorById = async (id) => {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
   const data = await response.json();
-  return data;
+  return data.vendor;
 };
 
 export const createVendor = async (vendorData) => {

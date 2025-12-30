@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import Dropdown from 'react-bootstrap/Dropdown';
 
-export default function VendorTable({ config }) {
+export default function PaginatedTable({ config }) {
   const {
     data = [],
     columnConfig = {},
