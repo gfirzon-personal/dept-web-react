@@ -1,8 +1,18 @@
+import PageTemplate from '../components/PageTemplate';
+import PageHeaderPanel from '../components/PageHeaderPanel';
+
 export default function About() {
+
+  const pagePanelConfig = {
+    icon: "bi bi-info-circle",
+    title: "About Us",
+    subtitle: "Company information",
+    description: "Learn more about our company."
+  }
+
   return (
-    <div className="container mt-5">
-      <h1>About Us</h1>
-      <p>Information about the company will appear here.</p>
-    </div>
+    <PageTemplate>
+      <PageHeaderPanel config={pagePanelConfig} />
+    </PageTemplate>
   );
 }

@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css'
 import { VendorProvider } from './contexts/VendorContext';
 import { ProductProvider } from './contexts/ProductContext';
 import TopMenu from './components/TopMenu';
