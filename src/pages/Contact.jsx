@@ -1,8 +1,18 @@
+import PageTemplate from '../components/PageTemplate';
+import PageHeaderPanel from '../components/PageHeaderPanel';
+
 export default function Contact() {
+
+  const pagePanelConfig = {
+    icon: "bi bi-person-lines-fill",
+    title: "Contact Us",
+    subtitle: "Firzon Technologies",
+    description: "Contact us for more information."
+  }
+
   return (
-    <div className="container mt-5">
-      <h1>Contact</h1>
-      <p>Contact information will appear here.</p>
-    </div>
+    <PageTemplate>
+      <PageHeaderPanel config={pagePanelConfig} />
+    </PageTemplate>
   );
 }
