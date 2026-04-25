@@ -8,11 +8,9 @@ export default function TopMenu() {
   const location = useLocation();
 
   const navItems = [
-    { label: 'Home', to: '/' },
-    { label: 'Cars', to: '/cars' },
+    { label: 'About', to: '/about' },
     { label: 'Vendors', to: '/vendors' },
     { label: 'Products', to: '/products' },
-    { label: 'About', to: '/about' },
     { label: 'Contact', to: '/contact' },
   ];
 

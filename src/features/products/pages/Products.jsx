@@ -1,44 +1,43 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useVendors } from '../contexts/VendorContext';
-import PaginatedTable from '../components/PaginatedTable';
-import ConfirmModal from '../components/ConfirmModal';
+import { useProducts } from '../contexts/ProductContext';
+import PaginatedTable from '../../shared/components/PaginatedTable';
+import ConfirmModal from '../../shared/components/ConfirmModal';
 
-export default function Vendors() {
+export default function Products() {
   const navigate = useNavigate();
-  const { vendors, loading, error, loadVendors, deleteVendor, clearError } = useVendors();
+  const { products, loading, error, loadProducts, deleteProduct, clearError } = useProducts();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [vendorToDelete, setVendorToDelete] = useState(null);
+  const [productToDelete, setProductToDelete] = useState(null);
   const [deleteError, setDeleteError] = useState(null);
 
-  // This effect runs the loadVendors function when the component mounts 
-  // or whenever the loadVendors reference changes.
+  // This effect runs the loadProducts function when the component mounts 
+  // or whenever the loadProducts reference changes.
   useEffect(() => {
-    loadVendors();
-  }, [loadVendors]);
-
-  const handleDelete = (vendor) => {
-    setVendorToDelete(vendor);
+    loadProducts();
+  }, [loadProducts]);
+  const handleDelete = (product) => {
+    setProductToDelete(product);
     setShowDeleteModal(true);
     setDeleteError(null);
   };
 
   const confirmDelete = async () => {
     try {
-      await deleteVendor(vendorToDelete.VendorID);
+      await deleteProduct(productToDelete.ProductID);
       setShowDeleteModal(false);
-      setVendorToDelete(null);
+      setProductToDelete(null);
       setDeleteError(null);
     } catch (err) {
-      setDeleteError(`Failed to delete vendor: ${err.message}`);
+      setDeleteError(`Failed to delete product: ${err.message}`);
       setShowDeleteModal(false);
-      setVendorToDelete(null);
+      setProductToDelete(null);
     }
   };
 
   const cancelDelete = () => {
     setShowDeleteModal(false);
-    setVendorToDelete(null);
+    setProductToDelete(null);
     setDeleteError(null);
   };
 
@@ -46,19 +45,19 @@ export default function Vendors() {
     if (!loading) {
       clearError();
       setDeleteError(null);
-      loadVendors();
+      loadProducts();
     }
   };
 
   // Define table configuration
   const tableConfig = {
-    data: vendors,
-    keyField: 'VendorID',
+    data: products,
+    keyField: 'ProductID',
     columnConfig: {
-      VendorID: { label: 'ID', field: 'VendorID' },
-      VendorName: { label: 'Vendor Name', field: 'VendorName' },
-      VendorPhone: { label: 'Phone', field: 'VendorPhone' },
-      Email: { label: 'Email', field: 'Email' }
+      ProductID: { label: 'ID', field: 'ProductID' },
+      ProductName: { label: 'Product Name', field: 'ProductName' },
+      SellPrice: { label: 'Price', field: 'SellPrice' },
+      ProductDescription: { label: 'Description', field: 'ProductDescription' }
     },
     actions: [
       {
@@ -71,10 +70,10 @@ export default function Vendors() {
         title: "Edit",
         icon: 'bi-pencil-square',
         className: 'text-primary',
-        onClick: (data) => { navigate(`/vendors/edit/${data.VendorID}`) }
+        onClick: (data) => { navigate(`/products/edit/${data.ProductID}`) }
       },
       {
-        title: "Delete Vendor",
+        title: "Delete Product",
         icon: 'bi-trash',
         className: 'text-danger',
         onClick: handleDelete
@@ -88,13 +87,13 @@ export default function Vendors() {
     <div className="container mt-5">
       <div className="d-flex justify-content-between align-items-center mb-4">
         <div>
-          <h1 className="mb-1 fs-3">Vendors</h1>
+          <h1 className="mb-1 fs-3">Products</h1>
           <p className="text-muted mb-0">
-            Browse and search vendor records
+            Browse and search product records
           </p>
         </div>
         <div className="text-muted">
-          <small>{vendors.length} total</small>
+          <small>{products.length} total</small>
         </div>
       </div>
 
@@ -106,10 +105,10 @@ export default function Vendors() {
             className="action-link text-primary text-decoration-none"
             onClick={(e) => {
               e.preventDefault();
-              navigate('/vendors/add');
+              navigate('/products/add');
             }}
             style={{ cursor: 'pointer' }}
-            title="Add Vendor"
+            title="Add Product"
           >
             <i className="bi bi-plus me-1"></i>
             Add
@@ -162,8 +161,8 @@ export default function Vendors() {
         isOpen={showDeleteModal}
         onClose={cancelDelete}
         onConfirm={confirmDelete}
-        title="Delete Vendor"
-        message={`Are you sure you want to delete vendor "${vendorToDelete?.VendorName}"?`}
+        title="Delete Product"
+        message={`Are you sure you want to delete product "${productToDelete?.ProductName}"?`}
         confirmText="Delete"
         cancelText="Cancel"
         confirmButtonClass="btn-danger"

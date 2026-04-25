@@ -1,17 +1,16 @@
 import { Routes, Route } from 'react-router-dom';
-import { vendorRoutes } from './VendorRoutes';
-import { productRoutes } from './ProductRoutes';
-import Home from '../pages/Home';
-import About from '../pages/About';
-import Contact from '../pages/Contact';
+import { vendorRoutes } from '../features/vendors/routes/VendorRoutes';
+import { productRoutes } from '../features/products/routes/ProductRoutes';
+import About from '../features/contact/pages/About';
+import Contact from '../features/contact/pages/Contact';
 
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Home />} />
+      <Route path="/" element={<About />} />
+      <Route path="/about" element={<About />} />
       {vendorRoutes}
       {productRoutes}
-      <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
     </Routes>
   );

@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import './App.css'
-import { VendorProvider } from './contexts/VendorContext';
-import { ProductProvider } from './contexts/ProductContext';
-import TopMenu from './components/TopMenu';
+import { VendorProvider } from './features/vendors/contexts/VendorContext';
+import { ProductProvider } from './features/products/contexts/ProductContext';
+import TopMenu from './features/shared/components/TopMenu';
 import AppRoutes from './routes/AppRoutes';
 
 export default function App() {

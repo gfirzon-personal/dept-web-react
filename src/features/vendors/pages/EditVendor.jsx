@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVendors } from '../contexts/VendorContext';
-import ConfirmModal from '../components/ConfirmModal';
+import ConfirmModal from '../../shared/components/ConfirmModal';
 
 export default function EditVendor() {
   const { id } = useParams();

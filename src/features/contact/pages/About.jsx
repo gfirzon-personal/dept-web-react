@@ -1,5 +1,5 @@
-import PageTemplate from '../components/PageTemplate';
-import PageHeaderPanel from '../components/PageHeaderPanel';
+import PageTemplate from '../../shared/components/PageTemplate';
+import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 
 export default function About() {
 
