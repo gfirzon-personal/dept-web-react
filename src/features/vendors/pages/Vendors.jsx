@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useVendors } from '../contexts/VendorContext';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
+import PageTemplate from '../../shared/components/PageTemplate';
+import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 
 export default function Vendors() {
   const navigate = useNavigate();
@@ -84,20 +86,23 @@ export default function Vendors() {
     rowsPerPageOptions: [5, 10, 25, 50, 100]
   };
 
+  const pagePanelConfig = {
+    icon: "bi bi-info-circle",
+    title: "Vendors",
+    subtitle: "Browse and search vendor records",
+    description: "Learn more about our vendors."
+  }
+
   return (
-    <div className="container mt-5">
+    <PageTemplate>
+      <PageHeaderPanel config={pagePanelConfig} />
       <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h1 className="mb-1 fs-3">Vendors</h1>
-          <p className="text-muted mb-0">
-            Browse and search vendor records
-          </p>
-        </div>
-        <div className="text-muted">
-          <small>{vendors.length} total</small>
-        </div>
+
       </div>
 
+      <div className="text-muted">
+        <small>{vendors.length} total</small>
+      </div>
       {/* Action Buttons Row - Azure Portal Style */}
       <div className="mb-3 p-2 border-bottom">
         <div className="d-flex gap-3">
@@ -168,6 +173,6 @@ export default function Vendors() {
         cancelText="Cancel"
         confirmButtonClass="btn-danger"
       />
-    </div>
+    </PageTemplate>
   );
 }

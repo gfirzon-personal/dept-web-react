@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useVendors } from '../contexts/VendorContext';
 import ConfirmModal from '../../shared/components/ConfirmModal';
+import PageTemplate from '../../shared/components/PageTemplate';
+import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 
 export default function EditVendor() {
   const { id } = useParams();
@@ -109,17 +111,19 @@ export default function EditVendor() {
     );
   }
 
+  const pagePanelConfig = {
+    icon: "bi bi-truck",
+    title: "Vendor Details",
+    subtitle: isEditMode ? 'Edit Vendor' : 'Add Vendor',
+    description: isEditMode ? 'Update vendor information' : 'Create a new vendor record'
+  }
+
   return (
-    <div className="container mt-5">
+    <PageTemplate>
+      <PageHeaderPanel config={pagePanelConfig} />
       <div className="row">
-        <div className="col-md-8 offset-md-2">
-          <div className="d-flex justify-content-between align-items-center mb-4">
-            <div>
-              <h1 className="mb-1 fs-3">{isEditMode ? 'Edit Vendor' : 'Add Vendor'}</h1>
-              <p className="text-muted mb-0">
-                {isEditMode ? 'Update vendor information' : 'Create a new vendor record'}
-              </p>
-            </div>
+        <div className="col-md-10 offset-md-1">
+          <div className="d-flex align-items-center gap-2 mb-4">
             <button
               className="btn btn-outline-secondary"
               onClick={handleCancel}
@@ -128,29 +132,17 @@ export default function EditVendor() {
               <i className="bi bi-arrow-left me-2"></i>
               Back to Vendors
             </button>
-          </div>
-
-          {/* Action Buttons Row - Azure Portal Style */}
-          {isEditMode && (
-            <div className="mb-3 p-2 border-bottom">
-              <a
-                href="#"
-                className={`action-link text-danger text-decoration-none ${saving ? 'disabled' : ''}`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  if (!saving) handleDelete();
-                }}
-                style={{
-                  cursor: saving ? 'not-allowed' : 'pointer',
-                  opacity: saving ? 0.5 : 1
-                }}
-                title="Delete Vendor"
+            {isEditMode && (
+              <button
+                className="btn btn-outline-danger"
+                onClick={handleDelete}
+                disabled={saving}
               >
                 <i className="bi bi-trash me-1"></i>
                 Delete
-              </a>
-            </div>
-          )}
+              </button>
+            )}
+          </div>
 
           {error && (
             <div className="alert alert-danger" role="alert">
@@ -164,7 +156,7 @@ export default function EditVendor() {
                 {isEditMode && (
                   <div className="mb-3">
                     <div className="mb-3 text-end">
-                      <span className="fw-bold">KEY:</span> 
+                      <span className="fw-bold">KEY:</span>
                       <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>
                         {vendor.VendorID}
                       </span>
@@ -272,6 +264,6 @@ export default function EditVendor() {
           confirmButtonClass="btn-danger"
         />
       )}
-    </div>
+    </PageTemplate>
   );
 }

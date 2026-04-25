@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { useProducts } from '../contexts/ProductContext';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
+import PageTemplate from '../../shared/components/PageTemplate';
+import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 
 export default function Products() {
   const navigate = useNavigate();
@@ -62,7 +64,7 @@ export default function Products() {
     actions: [
       {
         title: "Details",
-        icon: 'bi-info-circle',
+        icon: 'bi-eye',
         className: 'text-success',
         onClick: (data) => { /* handler */ }
       },
@@ -83,20 +85,20 @@ export default function Products() {
     rowsPerPageOptions: [5, 10, 25, 50, 100]
   };
 
-  return (
-    <div className="container mt-5">
-      <div className="d-flex justify-content-between align-items-center mb-4">
-        <div>
-          <h1 className="mb-1 fs-3">Products</h1>
-          <p className="text-muted mb-0">
-            Browse and search product records
-          </p>
-        </div>
-        <div className="text-muted">
-          <small>{products.length} total</small>
-        </div>
-      </div>
+  const pagePanelConfig = {
+    icon: "bi bi-tags",
+    title: "Products",
+    subtitle: "Browse and search product records",
+    description: "Learn more about our products."
+  }
 
+  return (
+    <PageTemplate>
+      <PageHeaderPanel config={pagePanelConfig} />
+
+      <div className="text-muted">
+        <small>{products.length} total</small>
+      </div>
       {/* Action Buttons Row - Azure Portal Style */}
       <div className="mb-3 p-2 border-bottom">
         <div className="d-flex gap-3">
@@ -167,6 +169,6 @@ export default function Products() {
         cancelText="Cancel"
         confirmButtonClass="btn-danger"
       />
-    </div>
+    </PageTemplate>
   );
 }
