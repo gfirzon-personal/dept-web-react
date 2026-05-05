@@ -115,7 +115,7 @@ export default function PaginatedTable({ config }) {
                <span className="ms-2">entries</span>
             </div>
             <div className="d-flex align-items-center">
-               <label htmlFor="tableFilter" className="me-2 mb-0">Search:</label>
+               <label htmlFor="tableFilter" className="me-2 mb-0">Filter:</label>
                <input
                   id="tableFilter"
                   type="text"
@@ -123,7 +123,7 @@ export default function PaginatedTable({ config }) {
                   style={{ width: '200px' }}
                   value={filterText}
                   onChange={handleFilterChange}
-                  placeholder="Filter..."
+                  placeholder="Enter text to filter..."
                />
             </div>
          </div>
