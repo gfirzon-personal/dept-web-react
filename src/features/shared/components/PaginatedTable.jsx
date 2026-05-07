@@ -35,12 +35,12 @@ export default function PaginatedTable({ config }) {
    // Filter data across all visible column fields
    const filteredData = filterText.trim()
       ? data.filter((item) =>
-           columns.some((col) => {
-              const field = columnConfig[col]?.field;
-              const value = field ? item[field] : '';
-              return String(value ?? '').toLowerCase().includes(filterText.toLowerCase());
-           })
-        )
+         columns.some((col) => {
+            const field = columnConfig[col]?.field;
+            const value = field ? item[field] : '';
+            return String(value ?? '').toLowerCase().includes(filterText.toLowerCase());
+         })
+      )
       : data;
 
    // Pagination calculations
