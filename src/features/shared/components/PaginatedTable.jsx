@@ -120,7 +120,7 @@ export default function PaginatedTable({ config }) {
                   id="tableFilter"
                   type="text"
                   className="form-control form-control-sm"
-                  style={{ width: '200px' }}
+                  style={{ width: '400px' }}
                   value={filterText}
                   onChange={handleFilterChange}
                   placeholder="Enter text to filter..."
