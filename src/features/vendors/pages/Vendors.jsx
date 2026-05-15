@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useVendors } from '../contexts/VendorContext';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import * as vendorService from '../services/vendorService';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
@@ -8,16 +9,33 @@ import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 
 export default function Vendors() {
    const navigate = useNavigate();
-   const { vendors, loading, error, loadVendors, deleteVendor, clearError } = useVendors();
+   const queryClient = useQueryClient();
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [vendorToDelete, setVendorToDelete] = useState(null);
    const [deleteError, setDeleteError] = useState(null);
 
-   // This effect runs the loadVendors function when the component mounts 
-   // or whenever the loadVendors reference changes.
-   useEffect(() => {
-      loadVendors();
-   }, [loadVendors]);
+   const { data: vendors = [], isFetching, error, refetch } = useQuery({
+      queryKey: ['vendors'],
+      queryFn: vendorService.fetchVendors,
+      staleTime: 5 * 60 * 1000,
+      refetchOnMount: false,
+      refetchOnWindowFocus: false,
+   });
+
+   const deleteMutation = useMutation({
+      mutationFn: (id) => vendorService.deleteVendor(id),
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ['vendors'] });
+         setShowDeleteModal(false);
+         setVendorToDelete(null);
+         setDeleteError(null);
+      },
+      onError: (err) => {
+         setDeleteError(`Failed to delete vendor: ${err.message}`);
+         setShowDeleteModal(false);
+         setVendorToDelete(null);
+      },
+   });
 
    const handleDelete = (vendor) => {
       setVendorToDelete(vendor);
@@ -25,17 +43,8 @@ export default function Vendors() {
       setDeleteError(null);
    };
 
-   const confirmDelete = async () => {
-      try {
-         await deleteVendor(vendorToDelete.VendorID);
-         setShowDeleteModal(false);
-         setVendorToDelete(null);
-         setDeleteError(null);
-      } catch (err) {
-         setDeleteError(`Failed to delete vendor: ${err.message}`);
-         setShowDeleteModal(false);
-         setVendorToDelete(null);
-      }
+   const confirmDelete = () => {
+      deleteMutation.mutate(vendorToDelete.VendorID);
    };
 
    const cancelDelete = () => {
@@ -45,10 +54,9 @@ export default function Vendors() {
    };
 
    const handleRefresh = () => {
-      if (!loading) {
-         clearError();
+      if (!isFetching) {
          setDeleteError(null);
-         loadVendors();
+         refetch();
       }
    };
 
@@ -124,12 +132,12 @@ export default function Vendors() {
                      handleRefresh();
                   }}
                   style={{
-                     cursor: loading ? 'not-allowed' : 'pointer',
-                     opacity: loading ? 0.5 : 1
+                     cursor: isFetching ? 'not-allowed' : 'pointer',
+                     opacity: isFetching ? 0.5 : 1
                   }}
                   title="Refresh"
                >
-                  <i className={`bi bi-arrow-clockwise me-1 ${loading ? 'spinner-border spinner-border-sm' : ''}`}></i>
+                  <i className={`bi bi-arrow-clockwise me-1 ${isFetching ? 'spinner-border spinner-border-sm' : ''}`}></i>
                   Refresh
                </a>
             </div>
@@ -137,19 +145,16 @@ export default function Vendors() {
 
          {(error || deleteError) && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
-               Error: {error || deleteError}
+               Error: {error?.message || deleteError}
                <button
                   type="button"
                   className="btn-close"
-                  onClick={() => {
-                     clearError();
-                     setDeleteError(null);
-                  }}
+                  onClick={() => setDeleteError(null)}
                ></button>
             </div>
          )}
 
-         {loading && !error ? (
+         {isFetching && !error ? (
             <div className="text-center my-5">
                <div className="spinner-border" role="status">
                   <span className="visually-hidden">Loading...</span>
