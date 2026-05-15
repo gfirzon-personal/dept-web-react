@@ -11,20 +11,20 @@ const queryClient = new QueryClient();
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-    <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
-      <VendorProvider>
-        <ProductProvider>
-          <div style={{
-            minHeight: '100vh',
-            background: '#f7f7f8',
-            fontFamily: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto'
-          }}>
-            <TopMenu />
-            <AppRoutes />
-          </div>
-        </ProductProvider>
-      </VendorProvider>
-    </Router>
+      <Router future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
+        <VendorProvider>
+          <ProductProvider>
+            <div style={{
+              minHeight: '100vh',
+              background: '#f7f7f8',
+              fontFamily: 'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto'
+            }}>
+              <TopMenu />
+              <AppRoutes />
+            </div>
+          </ProductProvider>
+        </VendorProvider>
+      </Router>
     </QueryClientProvider>
   );
 }
