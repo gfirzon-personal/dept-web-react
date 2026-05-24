@@ -1,61 +1,36 @@
 // src/services/vendorService.js
+import { apiRequest } from '../../shared/services/apiRequest';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export const fetchVendors = async () => {
-  const response = await fetch(`${API_BASE_URL}/vendors`);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
+  const data = await apiRequest(`${API_BASE_URL}/vendors`);
   return data.vendors;
 };
 
 export const fetchVendorById = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/vendors/${id}`);
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
+  const data = await apiRequest(`${API_BASE_URL}/vendors/${id}`);
   return data.vendor;
 };
 
 export const createVendor = async (vendorData) => {
-  const response = await fetch(`${API_BASE_URL}/vendors`, {
+  const data = await apiRequest(`${API_BASE_URL}/vendors`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(vendorData),
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
   return data;
 };
 
 export const updateVendor = async (vendorData) => {
-  const response = await fetch(`${API_BASE_URL}/vendors`, {
+  const data = await apiRequest(`${API_BASE_URL}/vendors`, {
     method: 'PUT',
-    headers: {
-      'Content-Type': 'application/json',
-    },
     body: JSON.stringify(vendorData),
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
   return data;
 };
 
 export const deleteVendor = async (id) => {
-  const response = await fetch(`${API_BASE_URL}/vendors/${id}`, {
+  const data = await apiRequest(`${API_BASE_URL}/vendors/${id}`, {
     method: 'DELETE',
   });
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-  const data = await response.json();
   return data;
 };
