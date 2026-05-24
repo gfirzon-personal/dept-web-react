@@ -37,12 +37,14 @@ async function readPayload(response) {
 }
 
 export async function apiRequest(url, options = {}) {
+  const { headers: optionHeaders = {}, ...fetchOptions } = options;
+
   const response = await fetch(url, {
+    ...fetchOptions,
     headers: {
       'Content-Type': 'application/json',
-      ...(options.headers || {}),
+      ...optionHeaders,
     },
-    ...options,
   });
 
   const payload = await readPayload(response);
