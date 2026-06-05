@@ -1,6 +1,6 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function VendorToolbar({ config }) {
+function VendorsToolbar({ config }) {
 
   const { isFetching: isLoading, handleRefresh: loadVendors } = config;
   const navigate = useNavigate();
@@ -46,4 +46,4 @@ function VendorToolbar({ config }) {
   )
 }
 
-export default VendorToolbar;
+export default VendorsToolbar;

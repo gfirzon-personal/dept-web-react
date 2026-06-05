@@ -5,8 +5,7 @@ import * as vendorService from '../services/vendorService';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
-import ActionsToolbar from '../../shared/components/ActionsToolbar';
-// import VendorToolbar from '../components/VendorToolbar';
+import VendorsToolbar from '../components/VendorsToolbar';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 
 export default function Vendors() {
@@ -110,7 +109,7 @@ export default function Vendors() {
             <small>{vendors.length} total</small>
          </div>
          {/* Action Buttons Row - Azure Portal Style */}
-         <ActionsToolbar config={vendorToolbarConfig} />
+         <VendorsToolbar config={vendorToolbarConfig} />
 
          {(error || deleteError) && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
