@@ -95,10 +95,10 @@ export default function Vendors() {
    };
 
    const pagePanelConfig = {
-      icon: "bi bi-info-circle",
+      icon: "bi bi-truck",
       title: "Vendors",
       subtitle: "Browse and search vendor records",
-      description: "Learn more about our vendors."
+      description: "View vendor information below."
    }
 
    return (
