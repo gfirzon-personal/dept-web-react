@@ -114,7 +114,7 @@ export default function PaginatedTable({ config }) {
                </select>
                <span className="ms-2">entries</span>
             </div>
-            
+
             <div className="d-flex align-items-center">
                <label htmlFor="tableFilter" className="me-2 mb-0">Filter:</label>
                <input
