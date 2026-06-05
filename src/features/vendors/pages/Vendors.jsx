@@ -2,10 +2,11 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import * as vendorService from '../services/vendorService';
-import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
+import VendorToolbar from '../components/VendorToolbar';
+import PaginatedTable from '../../shared/components/PaginatedTable';
 
 export default function Vendors() {
    const navigate = useNavigate();
@@ -72,16 +73,10 @@ export default function Vendors() {
       },
       actions: [
          {
-            title: "Details",
-            icon: 'bi-info-circle',
-            className: 'text-success',
-            onClick: (data) => { /* handler */ }
-         },
-         {
             title: "Edit",
             icon: 'bi-pencil-square',
             className: 'text-primary',
-            onClick: (data) => { navigate(`/vendors/edit/${data.VendorID}`) }
+            onClick: (data) => { navigate(`/vendor/${data.VendorID}`) }
          },
          {
             title: "Delete Vendor",
@@ -101,6 +96,11 @@ export default function Vendors() {
       description: "View vendor information below."
    }
 
+   const vendorToolbarConfig = {
+      isFetching,
+      handleRefresh
+   }
+
    return (
       <PageTemplate>
          <PageHeaderPanel config={pagePanelConfig} />
@@ -109,39 +109,7 @@ export default function Vendors() {
             <small>{vendors.length} total</small>
          </div>
          {/* Action Buttons Row - Azure Portal Style */}
-         <div className="mb-3 p-2 border-bottom">
-            <div className="d-flex gap-3">
-               <a
-                  href="#"
-                  className="action-link text-primary text-decoration-none"
-                  onClick={(e) => {
-                     e.preventDefault();
-                     navigate('/vendors/add');
-                  }}
-                  style={{ cursor: 'pointer' }}
-                  title="Add Vendor"
-               >
-                  <i className="bi bi-plus me-1"></i>
-                  Add
-               </a>
-               <a
-                  href="#"
-                  className="action-link text-primary text-decoration-none"
-                  onClick={(e) => {
-                     e.preventDefault();
-                     handleRefresh();
-                  }}
-                  style={{
-                     cursor: isFetching ? 'not-allowed' : 'pointer',
-                     opacity: isFetching ? 0.5 : 1
-                  }}
-                  title="Refresh"
-               >
-                  <i className={`bi bi-arrow-clockwise me-1 ${isFetching ? 'spinner-border spinner-border-sm' : ''}`}></i>
-                  Refresh
-               </a>
-            </div>
-         </div>
+         <VendorToolbar config={vendorToolbarConfig} />
 
          {(error || deleteError) && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">

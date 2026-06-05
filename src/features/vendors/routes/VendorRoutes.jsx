@@ -5,7 +5,7 @@ import EditVendor from '../pages/EditVendor';
 export const vendorRoutes = (
   <>
     <Route path="/vendors" element={<Vendors />} />
-    <Route path="/vendors/add" element={<EditVendor />} />
-    <Route path="/vendors/edit/:id" element={<EditVendor />} />
+    <Route path="/vendor" element={<EditVendor />} />
+    <Route path="/vendor/:id" element={<EditVendor />} />
   </>
 );
