@@ -121,6 +121,7 @@ export default function EditVendor() {
   return (
     <PageTemplate>
       <PageHeaderPanel config={pagePanelConfig} />
+      
       <div className="row">
         <div className="col-md-10 offset-md-1">
           <div className="d-flex align-items-center gap-2 mb-4">
