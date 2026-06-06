@@ -7,6 +7,7 @@ import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 import VendorsToolbar from '../components/VendorsToolbar';
 import PaginatedTable from '../../shared/components/PaginatedTable';
+import FancySpinner from '../../shared/components/FancySpinner';
 
 export default function Vendors() {
    const navigate = useNavigate();
@@ -123,11 +124,10 @@ export default function Vendors() {
          )}
 
          {isFetching && !error ? (
-            <div className="text-center my-5">
-               <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-               </div>
-            </div>
+            <FancySpinner config={{
+               title: "Loading Vendors",
+               description: "Fetching vendor data, please wait..."
+            }} />
          ) : (
             <PaginatedTable config={tableConfig} />
          )}

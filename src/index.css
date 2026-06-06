@@ -31,3 +31,61 @@ p {
 #root {
   min-height: 100vh;
 }
+
+/* ---------------------------------------------------------------------- */
+/* Spinner Styles */
+/* ---------------------------------------------------------------------- */
+
+.fancy-spinner-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.fancy-spinner {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  position: relative;
+  background:
+    conic-gradient(from 0deg,
+      #0d6efd 0deg,
+      #20c997 120deg,
+      #0dcaf0 240deg,
+      #0d6efd 360deg);
+  animation: spin 1s linear infinite, pulse 1.5s ease-in-out infinite;
+  box-shadow: 0 0 18px rgba(13, 110, 253, 0.35);
+}
+
+.fancy-spinner::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border-radius: 50%;
+  background: white;
+}
+
+.fancy-spinner-label {
+  color: #6c757d;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 10px rgba(13, 110, 253, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 24px rgba(32, 201, 151, 0.35);
+  }
+}
