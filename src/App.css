@@ -464,6 +464,10 @@
   padding: 2rem;
 }
 
+.generic-th {
+  color: #ffc107 !important;
+}
+
 @media (max-width: 640px) {
   .cars-form-header {
     align-items: flex-start;

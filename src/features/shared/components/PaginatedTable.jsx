@@ -133,9 +133,9 @@ export default function PaginatedTable({ config }) {
                <thead className="table-dark">
                   <tr>
                      {columns.map((col) => (
-                        <th key={col} className="text-start" style={{ color: '#ffc107' }}>{columnConfig[col]?.label || col}</th>
+                        <th key={col} className="text-start generic-th">{columnConfig[col]?.label || col}</th>
                      ))}
-                     {actions && actions.length > 0 && <th className="text-start" style={{ color: '#ffc107' }}>Actions</th>}
+                     {actions && actions.length > 0 && <th className="text-start generic-th">Actions</th>}
                   </tr>
                </thead>
                <tbody>
