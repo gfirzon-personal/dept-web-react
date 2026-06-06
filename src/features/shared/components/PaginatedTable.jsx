@@ -96,6 +96,7 @@ export default function PaginatedTable({ config }) {
 
    return (
       <div style={{ paddingBottom: '150px' }}>
+         
          {/* Rows per page selector */}
          <div className="d-flex justify-content-between align-items-center mb-2">
             <div className="d-flex align-items-center">
