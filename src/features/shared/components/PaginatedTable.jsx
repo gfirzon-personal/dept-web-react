@@ -1,6 +1,5 @@
-// src/components/VendorTable.jsx
 import { useState } from 'react';
-import Dropdown from 'react-bootstrap/Dropdown';
+import ActionsDropdown from './ActionsDropdown';
 
 export default function PaginatedTable({ config }) {
    const {
@@ -134,9 +133,9 @@ export default function PaginatedTable({ config }) {
                <thead className="table-dark">
                   <tr>
                      {columns.map((col) => (
-                        <th key={col}>{columnConfig[col]?.label || col}</th>
+                        <th key={col} className="text-start" style={{ color: '#ffc107' }}>{columnConfig[col]?.label || col}</th>
                      ))}
-                     {actions && actions.length > 0 && <th>Actions</th>}
+                     {actions && actions.length > 0 && <th className="text-start" style={{ color: '#ffc107' }}>Actions</th>}
                   </tr>
                </thead>
                <tbody>
@@ -155,29 +154,7 @@ export default function PaginatedTable({ config }) {
                         })}
                         {actions && actions.length > 0 && (
                            <td>
-                              <Dropdown align="end" drop={rowIndex >= paginatedData.length - 2 ? "up" : "down"}>
-                                 <Dropdown.Toggle variant="secondary" size="sm">
-                                    Actions
-                                 </Dropdown.Toggle>
-                                 <Dropdown.Menu>
-                                    {actions.map((action, index) => {
-                                       const needsDivider = action.title?.toLowerCase().includes('delete') && index > 0;
-
-                                       return (
-                                          <div key={index}>
-                                             {needsDivider && <Dropdown.Divider />}
-                                             <Dropdown.Item
-                                                onClick={() => action.onClick(item)}
-                                                className={action.className || ''}
-                                             >
-                                                {action.icon && <i className={`bi ${action.icon} me-2`}></i>}
-                                                {action.title}
-                                             </Dropdown.Item>
-                                          </div>
-                                       );
-                                    })}
-                                 </Dropdown.Menu>
-                              </Dropdown>
+                              <ActionsDropdown actions={actions} rowData={item} />
                            </td>
                         )}
                      </tr>
