@@ -129,7 +129,7 @@ export default function PaginatedTable({ config }) {
          </div>
 
          <div className="table-responsive">
-            <table className="table table-striped table-hover" style={{ marginBottom: '150px' }}>
+            <table className="table table-striped table-hover table-dark mb-0" style={{ marginBottom: '150px' }}>
                <thead className="table-dark">
                   <tr>
                      {columns.map((col) => (
@@ -154,7 +154,7 @@ export default function PaginatedTable({ config }) {
                         })}
                         {actions && actions.length > 0 && (
                            <td>
-                              <ActionsDropdown actions={actions} rowData={item} />
+                              <ActionsDropdown actions={actions} item={item} />
                            </td>
                         )}
                      </tr>
