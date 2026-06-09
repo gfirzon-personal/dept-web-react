@@ -63,6 +63,7 @@ export default function Product() {
          ProductName: productData.ProductName || '',
          ProductDescription: productData.ProductDescription || '',
          UnitsInStock: productData.UnitsInStock || 0,
+         SellPrice: productData.SellPrice || 0,
          DiscountPercentage: productData.DiscountPercentage || 0,
          UnitsMax: productData.UnitsMax || 0
       });
@@ -178,7 +179,7 @@ export default function Product() {
                            <label htmlFor="ProductDescription" className="form-label">
                               Product Description <span className="text-danger">*</span>
                            </label>
-                           <textarea 
+                           <textarea
                               rows={4}
                               className="form-control"
                               id="ProductDescription"
@@ -190,7 +191,48 @@ export default function Product() {
                               disabled={saving}
                            />
                            <div className="form-text">Maximum 250 characters</div>
-                        </div>                        
+                        </div>
+
+                        <div className="parent-container d-flex">
+                           <div className="mb-3">
+                              <label htmlFor="UnitsInStock" className="form-label">
+                                 Units In Stock <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 type="number"
+                                 className="form-control"
+                                 id="UnitsInStock"
+                                 name="UnitsInStock"
+                                 value={product.UnitsInStock}
+                                 onChange={handleChange}
+                                 max={99999}
+                                 required
+                                 disabled={saving}
+                              />
+                              <div className="form-text">Maximum 99999</div>
+                           </div>
+
+                           <div className="mb-3">
+                              <label htmlFor="SellPrice" className="form-label">
+                                 Sell Price <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 type="number"
+                                 className="form-control"
+                                 id="SellPrice"
+                                 name="SellPrice"
+                                 value={product.SellPrice}
+                                 onChange={handleChange}
+                                 inputMode="decimal"
+                                 min="0.00"
+                                 max="9999999.99"
+                                 step="0.01"
+                                 required
+                                 disabled={saving}
+                              />
+                              <div className="form-text">Maximum 9999999.99</div>
+                           </div>
+                        </div>
 
                      </form>
                   </div>
