@@ -20,7 +20,8 @@ export default function Vendors() {
       queryKey: ['vendors'],
       queryFn: vendorService.fetchVendors,
       staleTime: 5 * 60 * 1000,
-      refetchOnMount: false,
+      // That means on mount, React Query refetches only when data is stale.
+      refetchOnMount: true,
       refetchOnWindowFocus: false,
    });
 

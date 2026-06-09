@@ -9,7 +9,7 @@ import FancySpinner from '../../shared/components/FancySpinner';
 import { useVendors } from '../contexts/VendorContext';
 
 const EMPTY_VENDOR = {
-  VendorID: '',
+  VendorID: 0,
   VendorName: '',
   VendorPhone: '',
   Email: ''
@@ -22,17 +22,10 @@ export default function EditVendor() {
   const { getVendor, createVendor, updateVendor, deleteVendor } = useVendors();
   const queryClient = useQueryClient();
 
-  //const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [vendor, setVendor] = useState(EMPTY_VENDOR);
-
-  // useEffect(() => {
-  //   if (isEditMode) {
-  //     loadVendor();
-  //   }
-  // }, [id]);
 
   const {
     data: vendorData,
@@ -46,25 +39,42 @@ export default function EditVendor() {
     refetchOnWindowFocus: false,
   });
 
-  // const loadVendor = async () => {
-  //   setLoading(true);
-  //   setError(null);
-  //   try {
-  //     const data = await getVendor(id);
-  //     console.log('Fetched vendor:', data); // <-- Add this
-  //     //console.log("VendorID:", data.vendor.VendorID); // <-- And this
-  //     setVendor({
-  //       VendorID: data.VendorID || '',
-  //       VendorName: data.VendorName || '',
-  //       VendorPhone: data.VendorPhone || '',
-  //       Email: data.Email || ''
-  //     });
-  //   } catch (err) {
-  //     setError(err.message);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  const createVendorMutation = useMutation({
+    mutationFn: (vendorData) => createVendor(vendorData),
+    onSuccess: async () => {
+      // Invalidate the 'vendors' query to ensure the list is updated with the new vendor
+      // That pulls vendors data in Vendors component (refetching because the key was invalidated).
+      await queryClient.invalidateQueries({ queryKey: ['vendors'] });
+      navigate('/vendors', { state: { message: 'Vendor created successfully.' } });
+    },
+    onError: (err) => {
+      setError(err.message);
+    }
+  });
+
+  const updateVendorMutation = useMutation({
+    mutationFn: (vendorData) => updateVendor(vendorData),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['vendors'] });
+      navigate('/vendors', { state: { message: 'Vendor updated successfully.' } });
+    },
+    onError: (err) => {
+      setError(err.message);
+    }
+  });
+
+  const deleteVendorMutation = useMutation({
+    mutationFn: (vendorId) => deleteVendor(vendorId),
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['vendors'] });
+      setShowDeleteModal(false);
+      navigate('/vendors', { state: { message: 'Vendor deleted successfully.' } });
+    },
+    onError: (err) => {
+      setError(`Failed to delete vendor: ${err.message}`);
+      setShowDeleteModal(false);
+    }
+  });
 
   useEffect(() => {
     if (!vendorData) {
@@ -91,18 +101,17 @@ export default function EditVendor() {
     e.preventDefault();
     setSaving(true);
     setError(null);
-    try {
-      if (isEditMode) {
-        await updateVendor(vendor);
-      } else {
-        // Don't send VendorID when creating a new vendor
-        const { VendorID, ...vendorData } = vendor;
-        await createVendor(vendorData);
-      }
-      navigate('/vendors');
-    } catch (err) {
-      setError(err.message);
-      setSaving(false);
+    if (isEditMode) {
+      updateVendorMutation.mutate(vendor, {
+        onSettled: () => setSaving(false)
+      });
+      return;
+    }
+    else {
+      const { VendorID, ...vendorData } = vendor;
+      createVendorMutation.mutate(vendorData, {
+        onSettled: () => setSaving(false)
+      });
     }
   };
 
@@ -111,14 +120,11 @@ export default function EditVendor() {
   };
 
   const confirmDelete = async () => {
-    try {
-      await deleteVendor(vendor.VendorID);
-      setShowDeleteModal(false);
-      navigate('/vendors');
-    } catch (err) {
-      setError(`Failed to delete vendor: ${err.message}`);
-      setShowDeleteModal(false);
-    }
+    setSaving(true);
+    setError(null);
+    deleteVendorMutation.mutate(vendor.VendorID, {
+      onSettled: () => setSaving(false),
+    });
   };
 
   const cancelDelete = () => {

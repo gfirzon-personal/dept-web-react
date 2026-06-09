@@ -165,7 +165,7 @@ export default function PaginatedTable({ config }) {
          </div>
 
          {/* Pagination Controls */}
-         {totalPages > 1 && (
+         {totalPages >= 1 && (
             <div className="d-flex justify-content-between align-items-center mt-3">
                <div className="text-muted">
                   Showing {filteredData.length === 0 ? 0 : startIndex + 1} to {Math.min(endIndex, filteredData.length)} of {filteredData.length} entries
