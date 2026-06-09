@@ -41,7 +41,7 @@ export default function Product() {
       error: loadError,
       refetch
    } = useQuery({
-      queryKey: ['products', id],
+      queryKey: ['product', id],
       queryFn: () => productService.fetchProductByIdAsync(id),
       staleTime: 5 * 60 * 1000,
       // That means on mount, React Query refetches only when data is stale.
