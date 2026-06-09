@@ -13,7 +13,7 @@ export default function ProductsToolbar({ config }) {
                className="action-link text-primary text-decoration-none"
                onClick={(e) => {
                   e.preventDefault();
-                  navigate('/products/add');
+                  navigate('/product');
                }}
                style={{ cursor: 'pointer' }}
                title="Add Product"

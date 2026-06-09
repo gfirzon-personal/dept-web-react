@@ -78,7 +78,7 @@ export default function Products() {
             title: "Edit",
             icon: 'bi-pencil-square',
             className: 'text-primary',
-            onClick: (data) => { navigate(`/products/edit/${data.ProductID}`) }
+            onClick: (data) => { navigate(`/product/${data.ProductID}`) }
          },
          {
             title: "Delete Product",
