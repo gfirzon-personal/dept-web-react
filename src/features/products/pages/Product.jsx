@@ -5,7 +5,7 @@ import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 import FancySpinner from '../../shared/components/FancySpinner';
-import * as productService from '../services/ProductService';
+import * as productService from '../services/productService';
 import ProductToolbar from '../components/ProductToolbar';
 
 const EMPTY_PRODUCT = {
@@ -20,7 +20,6 @@ const EMPTY_PRODUCT = {
 export default function Product() {
    const [saving, setSaving] = useState(false);
    const [error, setError] = useState(null);
-   const [isLoading, setIsLoading] = useState(false)
    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
    const navigate = useNavigate();
@@ -36,26 +35,38 @@ export default function Product() {
       description: isEditMode ? 'Update product information' : 'Create a new product record'
    }
 
-   useEffect(() => {
-      loadProduct();
-   }, [])
+   const {
+      data: productData,
+      isLoading,
+      error: loadError,
+      fetchStatus
+   } = useQuery({
+      queryKey: ['product', id],
+      queryFn: () => productService.fetchProductByIdAsync(id),
+      // That means on mount, React Query refetches only when data is stale.
+      enabled: isEditMode,
+      refetchOnWindowFocus: false,
+   });
 
-   async function loadProduct() {
-      if (!isEditMode) {
+   useEffect(() => {
+      // console.log("Fetch status:", fetchStatus);
+   }, [fetchStatus]);
+
+   useEffect(() => {
+      if (!productData) {
+         // console.warn('No product data found for ID:', id);
          return;
       }
-      try {
-         setIsLoading(true);
-         console.log('Loading product with ID:', id);
-         const serviceProduct = await productService.fetchProductByIdAsync(id);
-         setProduct(serviceProduct);
-      } catch (error) {
-         //setErrorMessage(error.message || 'Failed to load vendor.');
 
-      } finally {
-         setIsLoading(false);
-      }
-   }
+      setProduct({
+         ProductID: productData.ProductID || 0,
+         ProductName: productData.ProductName || '',
+         ProductDescription: productData.ProductDescription || '',
+         UnitsInStock: productData.UnitsInStock || 0,
+         DiscountPercentage: productData.DiscountPercentage || 0,
+         UnitsMax: productData.UnitsMax || 0
+      });
+   }, [productData]);
 
    if (isLoading) {
       return (
