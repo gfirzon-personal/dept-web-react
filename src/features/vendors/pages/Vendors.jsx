@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import * as vendorService from '../services/vendorService';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 import VendorsToolbar from '../components/VendorsToolbar';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import FancySpinner from '../../shared/components/FancySpinner';
+import * as vendorService from '../services/vendorService';
 
 export default function Vendors() {
    const navigate = useNavigate();

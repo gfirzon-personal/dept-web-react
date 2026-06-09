@@ -1,24 +1,31 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useProducts } from '../contexts/ProductContext';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+// import { useProducts } from '../contexts/ProductContext';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 import ProductsToolbar from '../components/ProductsToolbar';
+import FancySpinner from '../../shared/components/FancySpinner';
+import * as productService from '../services/ProductService';
 
 export default function Products() {
    const navigate = useNavigate();
-   const { products, loading, error, loadProducts, deleteProduct, clearError } = useProducts();
+   //const { products, loading, error, loadProducts, deleteProduct, clearError } = useProducts();
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [productToDelete, setProductToDelete] = useState(null);
    const [deleteError, setDeleteError] = useState(null);
 
-   // This effect runs the loadProducts function when the component mounts 
-   // or whenever the loadProducts reference changes.
-   useEffect(() => {
-      loadProducts();
-   }, [loadProducts]);
+   const { data: products = [], isFetching, error, refetch } = useQuery({
+      queryKey: ['products'],
+      queryFn: productService.fetchProductsAsync,
+      staleTime: 5 * 60 * 1000,
+      // That means on mount, React Query refetches only when data is stale.
+      refetchOnMount: true,
+      refetchOnWindowFocus: false,
+   });
+
    const handleDelete = (product) => {
       setProductToDelete(product);
       setShowDeleteModal(true);
@@ -45,10 +52,10 @@ export default function Products() {
    };
 
    const handleRefresh = () => {
-      if (!loading) {
+      if (!isFetching) {
          clearError();
          setDeleteError(null);
-         loadProducts();
+         refetch();
       }
    };
 
@@ -93,6 +100,15 @@ export default function Products() {
       description: "Learn more about our products."
    }
 
+  if (isFetching) {
+    return (
+      <FancySpinner config={{
+        title: "Loading Products",
+        description: "Fetching product data, please wait..."
+      }} />
+    );
+  }   
+
    return (
       <PageTemplate>
          <PageHeaderPanel config={pagePanelConfig} />
@@ -101,7 +117,7 @@ export default function Products() {
             <small>{products.length} total</small>
          </div>
          {/* Action Buttons Row - Azure Portal Style */}
-         <ProductsToolbar config={{ isFetching: loading, handleRefresh }} />
+         <ProductsToolbar config={{ isFetching, handleRefresh }} />
 
          {(error || deleteError) && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
@@ -117,15 +133,7 @@ export default function Products() {
             </div>
          )}
 
-         {loading && !error ? (
-            <div className="text-center my-5">
-               <div className="spinner-border" role="status">
-                  <span className="visually-hidden">Loading...</span>
-               </div>
-            </div>
-         ) : (
-            <PaginatedTable config={tableConfig} />
-         )}
+         <PaginatedTable config={tableConfig} />
 
          {/* Delete Confirmation Modal */}
          <ConfirmModal
