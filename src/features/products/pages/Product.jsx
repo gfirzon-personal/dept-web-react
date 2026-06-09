@@ -37,17 +37,31 @@ export default function Product() {
 
    const {
       data: productData,
-      isFetching,
+      isLoading,
       error: loadError,
-      refetch
+      fetchStatus
    } = useQuery({
       queryKey: ['product', id],
       queryFn: () => productService.fetchProductByIdAsync(id),
-      staleTime: 5 * 60 * 1000,
+      // queryFn: () => {
+      //    return Promise.resolve({
+      //       "ProductID": 1,
+      //       "ProductName": "Milk 2%",
+      //       "ProductDescription": "Delicious 2%",
+      //       "UnitsInStock": 100,
+      //       "SellPrice": 5.99,
+      //       "DiscountPercentage": 2,
+      //       "UnitsMax": 500
+      //    });
+      // },
       // That means on mount, React Query refetches only when data is stale.
       enabled: true, //isEditMode,
       refetchOnWindowFocus: false,
    });
+
+   useEffect(() => {
+      console.log("Fetch status:", fetchStatus);
+   }, [fetchStatus]);
 
    useEffect(() => {
       if (!productData) {
@@ -65,7 +79,7 @@ export default function Product() {
       });
    }, [productData]);
 
-   if (isFetching) {
+   if (isLoading) {
       return (
          <FancySpinner config={{
             title: "Loading Product",

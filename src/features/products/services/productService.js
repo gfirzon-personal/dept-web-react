@@ -9,9 +9,11 @@ export const fetchProductsAsync = async () => {
 
 export const fetchProductByIdAsync = async (id) => {
   console.log('Fetching product with ID:', id);
-  
-  const data = await apiRequest(`${API_BASE_URL}/products/${id}`);
-  return data.product;
+
+  // const data = await apiRequest(`${API_BASE_URL}/products/${id}`);
+  // return data.product;
+
+  return null;
 };
 
 export const createProduct = async (productData) => {
