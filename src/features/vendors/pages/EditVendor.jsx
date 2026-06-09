@@ -156,7 +156,7 @@ export default function EditVendor() {
       <PageHeaderPanel config={pagePanelConfig} />
 
       <div className="row">
-        <div className="col-md-10 offset-md-1">
+        <div className="col-md-12 offset-md-0">
           <div className="d-flex align-items-center gap-2 mb-4">
             <button
               className="btn btn-outline-secondary"
