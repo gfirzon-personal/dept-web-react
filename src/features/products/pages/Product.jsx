@@ -235,7 +235,7 @@ export default function Product() {
 
                            <div className="mb-3">
                               <label htmlFor="DiscountPercentage" className="form-label">
-                                 Discount Percentage <span className="text-danger">*</span>
+                                 Discount in % <span className="text-danger">*</span>
                               </label>
                               <input
                                  type="number"
@@ -251,8 +251,27 @@ export default function Product() {
                               />
                               <div className="form-text">Maximum 100</div>
                            </div>
-                        </div>
 
+                           <div className="mb-3">
+                              <label htmlFor="UnitsMax" className="form-label">
+                                 Units Max <span className="text-danger">*</span>
+                              </label>
+                              <input
+                                 type="number"
+                                 className="form-control"
+                                 id="UnitsMax"
+                                 name="UnitsMax"
+                                 value={product.UnitsMax}
+                                 onChange={handleChange}
+                                 min="0"
+                                 max="100000"
+                                 required
+                                 disabled={saving}
+                              />
+                              <div className="form-text">Maximum 100000</div>
+                           </div>
+
+                        </div>
                      </form>
                   </div>
                </div>
