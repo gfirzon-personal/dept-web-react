@@ -19,6 +19,7 @@ const EMPTY_PRODUCT = {
 
 export default function Product() {
    const [saving, setSaving] = useState(false);
+   const [error, setError] = useState(null);
    const [showDeleteModal, setShowDeleteModal] = useState(false);
 
    const navigate = useNavigate();
@@ -34,7 +35,12 @@ export default function Product() {
       description: isEditMode ? 'Update product information' : 'Create a new product record'
    }
 
-   const { data: productData, isFetching, error, refetch } = useQuery({
+   const {
+      data: productData,
+      isFetching,
+      error: loadError,
+      refetch
+   } = useQuery({
       queryKey: ['products', id],
       queryFn: () => productService.fetchProductByIdAsync(id),
       staleTime: 5 * 60 * 1000,
@@ -72,6 +78,24 @@ export default function Product() {
       setShowDeleteModal(true);
    };
 
+   const handleSubmit = async (e) => {
+      e.preventDefault();
+      //  setSaving(true);
+      //  setError(null);
+      //  if (isEditMode) {
+      //    updateVendorMutation.mutate(vendor, {
+      //      onSettled: () => setSaving(false)
+      //    });
+      //    return;
+      //  }
+      //  else {
+      //    const { VendorID, ...vendorData } = vendor;
+      //    createVendorMutation.mutate(vendorData, {
+      //      onSettled: () => setSaving(false)
+      //    });
+      //  }
+   };
+
    return (
       <PageTemplate>
          <PageHeaderPanel config={pagePanelConfig} />
@@ -83,6 +107,31 @@ export default function Product() {
                      isEditMode, saving, handleCancel, handleDelete
                   }}
                />
+
+               {error && (
+                  <div className="alert alert-danger" role="alert">
+                     Error: {error}
+                  </div>
+               )}
+
+               {/* form goes here */}
+               <div className="card">
+                  <div className="card-body">
+                     <form onSubmit={handleSubmit}>
+                        {isEditMode && (
+                           <div className="mb-3">
+                              <div className="mb-3 text-end">
+                                 <span className="fw-bold">KEY:</span>
+                                 <span className="px-2 py-1 rounded" style={{ backgroundColor: '#e9ecef' }}>
+                                    {product.ProductID}
+                                 </span>
+                              </div>
+                           </div>
+                        )}
+                     </form>
+                  </div>
+               </div>
+
             </div>
          </div>
 
