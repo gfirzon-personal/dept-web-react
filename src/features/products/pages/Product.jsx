@@ -68,6 +68,14 @@ export default function Product() {
       });
    }, [productData]);
 
+   const handleChange = (e) => {
+      const { name, value } = e.target;
+      setProduct(prev => ({
+         ...prev,
+         [name]: value
+      }));
+   };
+
    if (isLoading) {
       return (
          <FancySpinner config={{
@@ -147,6 +155,25 @@ export default function Product() {
                               </div>
                            </div>
                         )}
+
+                        <div className="mb-3">
+                           <label htmlFor="ProductName" className="form-label">
+                              Product Name <span className="text-danger">*</span>
+                           </label>
+                           <input
+                              type="text"
+                              className="form-control"
+                              id="ProductName"
+                              name="ProductName"
+                              value={product.ProductName}
+                              onChange={handleChange}
+                              maxLength={50}
+                              required
+                              disabled={saving}
+                           />
+                           <div className="form-text">Maximum 50 characters</div>
+                        </div>
+
                      </form>
                   </div>
                </div>
