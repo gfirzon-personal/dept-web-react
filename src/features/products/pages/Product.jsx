@@ -270,7 +270,35 @@ export default function Product() {
                               />
                               <div className="form-text">Maximum 100000</div>
                            </div>
+                        </div>
 
+
+                        <div className="d-flex gap-2">
+                           <button
+                              type="submit"
+                              className="btn btn-primary"
+                              disabled={saving}
+                           >
+                              {saving ? (
+                                 <>
+                                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    {isEditMode ? 'Saving...' : 'Creating...'}
+                                 </>
+                              ) : (
+                                 <>
+                                    <i className="bi bi-check-lg me-2"></i>
+                                    {isEditMode ? 'Save Changes' : 'Create Product'}
+                                 </>
+                              )}
+                           </button>
+                           <button
+                              type="button"
+                              className="btn btn-secondary"
+                              onClick={handleCancel}
+                              disabled={saving}
+                           >
+                              Cancel
+                           </button>
                         </div>
                      </form>
                   </div>
