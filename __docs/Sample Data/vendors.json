@@ -1,0 +1,19 @@
+{
+    "app": "My FastAPI App",
+    "version": "1.0.0",
+    "datetime_iso": "2026-06-08T21:10:17.852305",
+    "vendors": [
+        {
+            "VendorID": 2,
+            "VendorName": "Fair Life Inc",
+            "VendorPhone": "8882223344",
+            "Email": "contact@fairlife.com"
+        },
+        {
+            "VendorID": 3,
+            "VendorName": "Blue Bell",
+            "VendorPhone": "8881112233",
+            "Email": "lala@igor.com"
+        }
+    ]
+}

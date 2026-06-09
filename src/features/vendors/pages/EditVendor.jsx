@@ -1,53 +1,83 @@
 // src/pages/EditVendor.jsx
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useVendors } from '../contexts/VendorContext';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
+import FancySpinner from '../../shared/components/FancySpinner';
+import { useVendors } from '../contexts/VendorContext';
+
+const EMPTY_VENDOR = {
+  VendorID: '',
+  VendorName: '',
+  VendorPhone: '',
+  Email: ''
+};
 
 export default function EditVendor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
   const { getVendor, createVendor, updateVendor, deleteVendor } = useVendors();
+  const queryClient = useQueryClient();
 
-  const [loading, setLoading] = useState(isEditMode);
+  //const [loading, setLoading] = useState(isEditMode);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [vendor, setVendor] = useState({
-    VendorID: '',
-    VendorName: '',
-    VendorPhone: '',
-    Email: ''
+  const [vendor, setVendor] = useState(EMPTY_VENDOR);
+
+  // useEffect(() => {
+  //   if (isEditMode) {
+  //     loadVendor();
+  //   }
+  // }, [id]);
+
+  const {
+    data: vendorData,
+    isLoading,
+    error: loadError,
+  } = useQuery({
+    queryKey: ['vendor', id],
+    queryFn: () => getVendor(id),
+    // Only fetch vendor data if we're in edit mode (i.e., an ID is present)
+    enabled: isEditMode,
+    refetchOnWindowFocus: false,
   });
 
-  useEffect(() => {
-    if (isEditMode) {
-      loadVendor();
-    }
-  }, [id]);
+  // const loadVendor = async () => {
+  //   setLoading(true);
+  //   setError(null);
+  //   try {
+  //     const data = await getVendor(id);
+  //     console.log('Fetched vendor:', data); // <-- Add this
+  //     //console.log("VendorID:", data.vendor.VendorID); // <-- And this
+  //     setVendor({
+  //       VendorID: data.VendorID || '',
+  //       VendorName: data.VendorName || '',
+  //       VendorPhone: data.VendorPhone || '',
+  //       Email: data.Email || ''
+  //     });
+  //   } catch (err) {
+  //     setError(err.message);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
-  const loadVendor = async () => {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await getVendor(id);
-      console.log('Fetched vendor:', data); // <-- Add this
-      //console.log("VendorID:", data.vendor.VendorID); // <-- And this
-      setVendor({
-        VendorID: data.VendorID || '',
-        VendorName: data.VendorName || '',
-        VendorPhone: data.VendorPhone || '',
-        Email: data.Email || ''
-      });
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
+  useEffect(() => {
+    if (!vendorData) {
+      return;
     }
-  };
+
+    setVendor({
+      VendorID: vendorData.VendorID || '',
+      VendorName: vendorData.VendorName || '',
+      VendorPhone: vendorData.VendorPhone || '',
+      Email: vendorData.Email || ''
+    });
+  }, [vendorData]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -99,15 +129,12 @@ export default function EditVendor() {
     navigate('/vendors');
   };
 
-  if (loading) {
+  if (isLoading) {
     return (
-      <div className="container mt-5">
-        <div className="text-center my-5">
-          <div className="spinner-border" role="status">
-            <span className="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </div>
+      <FancySpinner config={{
+        title: "Loading Vendor",
+        description: "Fetching vendor data, please wait..."
+      }} />
     );
   }
 
@@ -121,7 +148,7 @@ export default function EditVendor() {
   return (
     <PageTemplate>
       <PageHeaderPanel config={pagePanelConfig} />
-      
+
       <div className="row">
         <div className="col-md-10 offset-md-1">
           <div className="d-flex align-items-center gap-2 mb-4">
