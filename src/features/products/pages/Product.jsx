@@ -6,6 +6,7 @@ import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
 import FancySpinner from '../../shared/components/FancySpinner';
 import * as productService from '../services/ProductService';
+import ProductToolbar from '../components/ProductToolbar';
 
 const EMPTY_PRODUCT = {
    ProductID: 0,
@@ -77,26 +78,11 @@ export default function Product() {
 
          <div className="row">
             <div className="col-md-12 offset-md-0">
-               <div className="d-flex align-items-center gap-2 mb-4">
-                  <button
-                     className="btn btn-outline-secondary"
-                     onClick={handleCancel}
-                     disabled={saving}
-                  >
-                     <i className="bi bi-arrow-left me-2"></i>
-                     Back to Products
-                  </button>
-                  {isEditMode && (
-                     <button
-                        className="btn btn-outline-danger"
-                        onClick={handleDelete}
-                        disabled={saving}
-                     >
-                        <i className="bi bi-trash me-1"></i>
-                        Delete
-                     </button>
-                  )}
-               </div>
+               <ProductToolbar
+                  config={{
+                     isEditMode, saving, handleCancel, handleDelete
+                  }}
+               />
             </div>
          </div>
 
