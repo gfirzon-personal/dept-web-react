@@ -12,7 +12,7 @@ import * as productService from '../services/ProductService';
 
 export default function Products() {
    const navigate = useNavigate();
-   //const { products, loading, error, loadProducts, deleteProduct, clearError } = useProducts();
+   const queryClient = useQueryClient();
    const [showDeleteModal, setShowDeleteModal] = useState(false);
    const [productToDelete, setProductToDelete] = useState(null);
    const [deleteError, setDeleteError] = useState(null);
@@ -26,6 +26,21 @@ export default function Products() {
       refetchOnWindowFocus: false,
    });
 
+   const deleteMutation = useMutation({
+      mutationFn: (id) => productService.deleteProduct(id),
+      onSuccess: () => {
+         queryClient.invalidateQueries({ queryKey: ['products'] });
+         setShowDeleteModal(false);
+         setProductToDelete(null);
+         setDeleteError(null);
+      },
+      onError: (err) => {
+         setDeleteError(`Failed to delete product: ${err.message}`);
+         setShowDeleteModal(false);
+         setProductToDelete(null);
+      },
+   });   
+
    const handleDelete = (product) => {
       setProductToDelete(product);
       setShowDeleteModal(true);
@@ -33,16 +48,17 @@ export default function Products() {
    };
 
    const confirmDelete = async () => {
-      try {
-         await deleteProduct(productToDelete.ProductID);
-         setShowDeleteModal(false);
-         setProductToDelete(null);
-         setDeleteError(null);
-      } catch (err) {
-         setDeleteError(`Failed to delete product: ${err.message}`);
-         setShowDeleteModal(false);
-         setProductToDelete(null);
-      }
+      deleteMutation.mutate(productToDelete.ProductID);
+      // try {
+      //    await deleteProduct(productToDelete.ProductID);
+      //    setShowDeleteModal(false);
+      //    setProductToDelete(null);
+      //    setDeleteError(null);
+      // } catch (err) {
+      //    setDeleteError(`Failed to delete product: ${err.message}`);
+      //    setShowDeleteModal(false);
+      //    setProductToDelete(null);
+      // }
    };
 
    const cancelDelete = () => {
