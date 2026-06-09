@@ -69,7 +69,6 @@ export default function Products() {
 
    const handleRefresh = () => {
       if (!isFetching) {
-         clearError();
          setDeleteError(null);
          refetch();
       }
@@ -142,7 +141,6 @@ export default function Products() {
                   type="button"
                   className="btn-close"
                   onClick={() => {
-                     clearError();
                      setDeleteError(null);
                   }}
                ></button>
