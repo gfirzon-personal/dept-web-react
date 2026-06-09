@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-// import { useProducts } from '../contexts/ProductContext';
 import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
@@ -49,16 +48,6 @@ export default function Products() {
 
    const confirmDelete = async () => {
       deleteMutation.mutate(productToDelete.ProductID);
-      // try {
-      //    await deleteProduct(productToDelete.ProductID);
-      //    setShowDeleteModal(false);
-      //    setProductToDelete(null);
-      //    setDeleteError(null);
-      // } catch (err) {
-      //    setDeleteError(`Failed to delete product: ${err.message}`);
-      //    setShowDeleteModal(false);
-      //    setProductToDelete(null);
-      // }
    };
 
    const cancelDelete = () => {
@@ -85,12 +74,6 @@ export default function Products() {
          ProductDescription: { label: 'Description', field: 'ProductDescription' }
       },
       actions: [
-         {
-            title: "Details",
-            icon: 'bi-eye',
-            className: 'text-success',
-            onClick: (data) => { /* handler */ }
-         },
          {
             title: "Edit",
             icon: 'bi-pencil-square',
