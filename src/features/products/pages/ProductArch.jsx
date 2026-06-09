@@ -17,7 +17,7 @@ const EMPTY_PRODUCT = {
    UnitsMax: 0
 };
 
-export default function Product() {
+export default function ProductArch() {
    const [saving, setSaving] = useState(false);
    const [error, setError] = useState(null);
    const [showDeleteModal, setShowDeleteModal] = useState(false);
