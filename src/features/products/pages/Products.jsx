@@ -5,6 +5,7 @@ import PaginatedTable from '../../shared/components/PaginatedTable';
 import ConfirmModal from '../../shared/components/ConfirmModal';
 import PageTemplate from '../../shared/components/PageTemplate';
 import PageHeaderPanel from '../../shared/components/PageHeaderPanel';
+import ProductsToolbar from '../components/ProductsToolbar';
 
 export default function Products() {
    const navigate = useNavigate();
@@ -100,39 +101,7 @@ export default function Products() {
             <small>{products.length} total</small>
          </div>
          {/* Action Buttons Row - Azure Portal Style */}
-         <div className="mb-3 p-2 border-bottom">
-            <div className="d-flex gap-3">
-               <a
-                  href="#"
-                  className="action-link text-primary text-decoration-none"
-                  onClick={(e) => {
-                     e.preventDefault();
-                     navigate('/products/add');
-                  }}
-                  style={{ cursor: 'pointer' }}
-                  title="Add Product"
-               >
-                  <i className="bi bi-plus me-1"></i>
-                  Add
-               </a>
-               <a
-                  href="#"
-                  className="action-link text-primary text-decoration-none"
-                  onClick={(e) => {
-                     e.preventDefault();
-                     handleRefresh();
-                  }}
-                  style={{
-                     cursor: loading ? 'not-allowed' : 'pointer',
-                     opacity: loading ? 0.5 : 1
-                  }}
-                  title="Refresh"
-               >
-                  <i className={`bi bi-arrow-clockwise me-1 ${loading ? 'spinner-border spinner-border-sm' : ''}`}></i>
-                  Refresh
-               </a>
-            </div>
-         </div>
+         <ProductsToolbar config={{ isFetching: loading, handleRefresh }} />
 
          {(error || deleteError) && (
             <div className="alert alert-danger alert-dismissible fade show" role="alert">
