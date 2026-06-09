@@ -45,17 +45,18 @@ export default function Product() {
       queryFn: () => productService.fetchProductByIdAsync(id),
       staleTime: 5 * 60 * 1000,
       // That means on mount, React Query refetches only when data is stale.
-      enabled: isEditMode,
+      enabled: true, //isEditMode,
       refetchOnWindowFocus: false,
    });
 
    useEffect(() => {
       if (!productData) {
+         console.warn('No product data found for ID:', id);
          return;
       }
 
       setProduct({
-         ProductID: productData.ProductID || '',
+         ProductID: productData.ProductID || 0,
          ProductName: productData.ProductName || '',
          ProductDescription: productData.ProductDescription || '',
          UnitsInStock: productData.UnitsInStock || 0,
