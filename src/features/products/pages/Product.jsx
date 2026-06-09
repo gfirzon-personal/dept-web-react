@@ -49,6 +49,21 @@ export default function Product() {
       refetchOnWindowFocus: false,
    });
 
+   useEffect(() => {
+      if (!productData) {
+         return;
+      }
+
+      setProduct({
+         ProductID: productData.ProductID || '',
+         ProductName: productData.ProductName || '',
+         ProductDescription: productData.ProductDescription || '',
+         UnitsInStock: productData.UnitsInStock || 0,
+         DiscountPercentage: productData.DiscountPercentage || 0,
+         UnitsMax: productData.UnitsMax || 0
+      });
+   }, [productData]);
+
    if (isFetching) {
       return (
          <FancySpinner config={{

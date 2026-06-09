@@ -7,7 +7,9 @@ export const fetchProductsAsync = async () => {
   return data.products;
 };
 
-export const fetchProductById = async (id) => {
+export const fetchProductByIdAsync = async (id) => {
+  console.log('Fetching product with ID:', id);
+  
   const data = await apiRequest(`${API_BASE_URL}/products/${id}`);
   return data.product;
 };
