@@ -174,6 +174,24 @@ export default function Product() {
                            <div className="form-text">Maximum 50 characters</div>
                         </div>
 
+                        <div className="mb-3">
+                           <label htmlFor="ProductDescription" className="form-label">
+                              Product Description <span className="text-danger">*</span>
+                           </label>
+                           <textarea 
+                              rows={4}
+                              className="form-control"
+                              id="ProductDescription"
+                              name="ProductDescription"
+                              value={product.ProductDescription}
+                              onChange={handleChange}
+                              maxLength={250}
+                              required
+                              disabled={saving}
+                           />
+                           <div className="form-text">Maximum 250 characters</div>
+                        </div>                        
+
                      </form>
                   </div>
                </div>
