@@ -180,7 +180,7 @@ export default function Product() {
                               Product Description <span className="text-danger">*</span>
                            </label>
                            <textarea
-                              rows={4}
+                              rows={2}
                               className="form-control"
                               id="ProductDescription"
                               name="ProductDescription"
@@ -193,7 +193,7 @@ export default function Product() {
                            <div className="form-text">Maximum 250 characters</div>
                         </div>
 
-                        <div className="parent-container d-flex">
+                        <div className="parent-container d-flex" style={{ gap: '2rem' }}>
                            <div className="mb-3">
                               <label htmlFor="UnitsInStock" className="form-label">
                                  Units In Stock <span className="text-danger">*</span>
