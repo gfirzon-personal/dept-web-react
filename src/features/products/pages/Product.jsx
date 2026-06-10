@@ -21,12 +21,12 @@ export default function Product() {
    const [saving, setSaving] = useState(false);
    const [error, setError] = useState(null);
    const [showDeleteModal, setShowDeleteModal] = useState(false);
+   const [product, setProduct] = useState(EMPTY_PRODUCT);
+   const queryClient = useQueryClient();
 
    const navigate = useNavigate();
    const { id } = useParams();
    const isEditMode = Boolean(id);
-
-   const [product, setProduct] = useState(EMPTY_PRODUCT);
 
    const pagePanelConfig = {
       icon: "bi bi-truck",
@@ -46,6 +46,43 @@ export default function Product() {
       // That means on mount, React Query refetches only when data is stale.
       enabled: isEditMode,
       refetchOnWindowFocus: false,
+   });
+
+   const createProductMutation = useMutation({
+      mutationFn: (productData) => productService.createProduct(productData),
+      onSuccess: async () => {
+         // Invalidate the 'products' query to ensure the list is updated with the new product
+         // That pulls products data in Products component (refetching because the key was invalidated).
+         await queryClient.invalidateQueries({ queryKey: ['products'] });
+         navigate('/products', { state: { message: 'Product created successfully.' } });
+      },
+      onError: (err) => {
+         setError(err.message);
+      }
+   });
+
+   const updateMutation = useMutation({
+      mutationFn: (productData) => productService.updateProduct(productData),
+      onSuccess: async () => {
+         await queryClient.invalidateQueries({ queryKey: ['products'] });
+         navigate('/products', { state: { message: 'Product updated successfully.' } });
+      },
+      onError: (err) => {
+         setError(err.message);
+      }
+   });
+
+   const deleteMutation = useMutation({
+      mutationFn: (productId) => productService.deleteProduct(productId),
+      onSuccess: async () => {
+         await queryClient.invalidateQueries({ queryKey: ['products'] });
+         setShowDeleteModal(false);
+         navigate('/products', { state: { message: 'Product deleted successfully.' } });
+      },
+      onError: (err) => {
+         setError(`Failed to delete product: ${err.message}`);
+         setShowDeleteModal(false);
+      }
    });
 
    useEffect(() => {
@@ -89,9 +126,9 @@ export default function Product() {
    const confirmDelete = async () => {
       setSaving(true);
       setError(null);
-      // deleteVendorMutation.mutate(vendor.VendorID, {
-      //    onSettled: () => setSaving(false),
-      // });
+      deleteMutation.mutate(product.ProductID, {
+         onSettled: () => setSaving(false),
+      });
    };
 
    const cancelDelete = () => {
@@ -108,20 +145,20 @@ export default function Product() {
 
    const handleSubmit = async (e) => {
       e.preventDefault();
-      //  setSaving(true);
-      //  setError(null);
-      //  if (isEditMode) {
-      //    updateVendorMutation.mutate(vendor, {
-      //      onSettled: () => setSaving(false)
-      //    });
-      //    return;
-      //  }
-      //  else {
-      //    const { VendorID, ...vendorData } = vendor;
-      //    createVendorMutation.mutate(vendorData, {
-      //      onSettled: () => setSaving(false)
-      //    });
-      //  }
+      setSaving(true);
+      setError(null);
+      if (isEditMode) {
+         updateMutation.mutate(product, {
+            onSettled: () => setSaving(false)
+         });
+         return;
+      }
+      else {
+         const { ProductID, ...productData } = product;
+         createProductMutation.mutate(productData, {
+            onSettled: () => setSaving(false)
+         });
+      }
    };
 
    return (
@@ -300,7 +337,7 @@ export default function Product() {
                               Cancel
                            </button>
                         </div>
-                        
+
                      </form>
                   </div>
                </div>
