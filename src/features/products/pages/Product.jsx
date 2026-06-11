@@ -13,6 +13,7 @@ const EMPTY_PRODUCT = {
    ProductName: '',
    ProductDescription: '',
    UnitsInStock: 0,
+   SellPrice: 0,
    DiscountPercentage: 0,
    UnitsMax: 0
 };
@@ -262,12 +263,12 @@ export default function Product() {
                                  onChange={handleChange}
                                  inputMode="decimal"
                                  min="0.00"
-                                 max="9999999.99"
+                                 max="9999.99"
                                  step="0.01"
                                  required
                                  disabled={saving}
                               />
-                              <div className="form-text">Maximum 9999999.99</div>
+                              <div className="form-text">Maximum 9999.99</div>
                            </div>
 
                            <div className="mb-3">
