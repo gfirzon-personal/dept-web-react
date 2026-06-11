@@ -255,20 +255,17 @@ export default function Product() {
                                  Sell Price <span className="text-danger">*</span>
                               </label>
                               <input
-                                 type="number"
+                                 type="text"
                                  className="form-control"
                                  id="SellPrice"
                                  name="SellPrice"
                                  value={product.SellPrice}
+                                 max={99999}                        
                                  onChange={handleChange}
-                                 inputMode="decimal"
-                                 min="0.00"
-                                 max="9999.99"
-                                 step="0.01"
                                  required
                                  disabled={saving}
                               />
-                              <div className="form-text">Maximum 9999.99</div>
+                              <div className="form-text">Maximum 99999</div>
                            </div>
 
                            <div className="mb-3">
