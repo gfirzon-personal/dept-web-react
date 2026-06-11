@@ -15,7 +15,7 @@ const EMPTY_VENDOR = {
   Email: ''
 };
 
-export default function EditVendor() {
+export default function Vendor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const isEditMode = Boolean(id);
