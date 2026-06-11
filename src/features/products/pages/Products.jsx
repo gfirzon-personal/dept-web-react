@@ -71,7 +71,10 @@ export default function Products() {
          ProductID: { label: 'ID', field: 'ProductID' },
          ProductName: { label: 'Product Name', field: 'ProductName' },
          SellPrice: { label: 'Price', field: 'SellPrice' },
-         ProductDescription: { label: 'Description', field: 'ProductDescription' }
+         ProductDescription: { 
+            label: 'Description', 
+            field: 'ProductDescription' 
+         }
       },
       actions: [
          {

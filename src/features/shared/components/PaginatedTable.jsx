@@ -150,8 +150,12 @@ export default function PaginatedTable({ config }) {
                   {paginatedData.map((item, rowIndex) => (
                      <tr key={item[keyField]}>
                         {columns.map((col) => {
+                           const maxLength = 20;
                            const field = columnConfig[col]?.field;
-                           return <td key={col}>{field ? item[field] : ''}</td>;
+                           const cellValue = field ? item[field] : '';
+                           const cellTextWs = cellValue !== null && cellValue !== undefined ? String(cellValue) : '';
+                           const cellText = cellTextWs.substring(0, maxLength) + (cellTextWs.length > maxLength ? '...' : '');
+                           return <td key={col} title={cellTextWs}>{cellText}</td>;
                         })}
                         {actions && actions.length > 0 && (
                            <td>
