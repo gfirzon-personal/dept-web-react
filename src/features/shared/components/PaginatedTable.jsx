@@ -58,6 +58,12 @@ export default function PaginatedTable({ config }) {
       }
    };
 
+   const handleSort = (field) => {
+      // Implement sorting logic here if needed
+      // For example, you could toggle between ascending/descending sort
+      console.log('Sorting by field:', field);
+   }
+
    const handleNext = () => {
       if (currentPage < totalPages) {
          setCurrentPage(currentPage + 1);
@@ -137,6 +143,10 @@ export default function PaginatedTable({ config }) {
                         <th
                            key={col}
                            data-sort={columnConfig[col]?.field}
+                           onClick={() => {
+                              const field = columnConfig[col]?.field;
+                              handleSort(field);
+                           }}
                            className="text-start generic-th">
                            {columnConfig[col]?.label || col}
                         </th>
