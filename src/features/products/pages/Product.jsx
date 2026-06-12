@@ -232,7 +232,7 @@ export default function Product() {
                         </div>
 
                         <div className="parent-container d-flex" style={{ gap: '2rem' }}>
-                           <div className="mb-3">
+                           <div className="mb-3 wb-10">
                               <label htmlFor="UnitsInStock" className="form-label">
                                  Units In Stock <span className="text-danger">*</span>
                               </label>
@@ -250,7 +250,7 @@ export default function Product() {
                               <div className="form-text">Maximum 99999</div>
                            </div>
 
-                           <div className="mb-3">
+                           <div className="mb-3 wb-25">
                               <label htmlFor="SellPrice" className="form-label">
                                  Sell Price <span className="text-danger">*</span>
                               </label>
@@ -268,7 +268,7 @@ export default function Product() {
                               <div className="form-text">Maximum 99999</div>
                            </div>
 
-                           <div className="mb-3">
+                           <div className="mb-3 wb-25">
                               <label htmlFor="DiscountPercentage" className="form-label">
                                  Discount in % <span className="text-danger">*</span>
                               </label>
@@ -287,7 +287,7 @@ export default function Product() {
                               <div className="form-text">Maximum 100</div>
                            </div>
 
-                           <div className="mb-3">
+                           <div className="mb-3 wb-25">
                               <label htmlFor="UnitsMax" className="form-label">
                                  Units Max <span className="text-danger">*</span>
                               </label>
