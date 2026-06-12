@@ -185,14 +185,14 @@ export default function PaginatedTable({ config }) {
                   </tr>
                </thead>
                <tbody>
-                  {sortedData.length === 0 && (
+                  {paginatedData.length === 0 && (
                      <tr>
                         <td colSpan={columns.length + (actions?.length > 0 ? 1 : 0)} className="text-center text-muted">
                            No matching records found.
                         </td>
                      </tr>
                   )}
-                  {sortedData.map((item, rowIndex) => (
+                  {paginatedData.map((item, rowIndex) => (
                      <tr key={item[keyField]}>
                         {columns.map((col) => {
                            const maxLength = 20;
