@@ -11,6 +11,11 @@ export default function PaginatedTable({ config }) {
       rowsPerPageOptions = [5, 10, 25, 50, 100]
    } = config || {};
 
+   const [sortConfig, setSortConfig] = useState({
+      field: null,
+      direction: 'asc'
+   });
+
    const [currentPage, setCurrentPage] = useState(1);
    const [itemsPerPage, setItemsPerPage] = useState(rowsPerPage);
    const [filterText, setFilterText] = useState('');
@@ -37,16 +42,33 @@ export default function PaginatedTable({ config }) {
          columns.some((col) => {
             const field = columnConfig[col]?.field;
             const value = field ? item[field] : '';
-            return String(value ?? '').toLowerCase().includes(filterText.toLowerCase());
+            return String(value ?? '')
+               .toLowerCase()
+               .includes(filterText.toLowerCase());
          })
       )
       : data;
 
+   const sortedData = [...filteredData].sort((a, b) => {
+      if (!sortConfig.field) return 0;
+
+      const aValue = a[sortConfig.field];
+      const bValue = b[sortConfig.field];
+
+      if (aValue == null) return 1;
+      if (bValue == null) return -1;
+
+      if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+      if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+
+      return 0;
+   });
+
    // Pagination calculations
-   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
+   const totalPages = Math.ceil(sortedData.length / itemsPerPage);
    const startIndex = (currentPage - 1) * itemsPerPage;
    const endIndex = startIndex + itemsPerPage;
-   const paginatedData = filteredData.slice(startIndex, endIndex);
+   const paginatedData = sortedData.slice(startIndex, endIndex);
 
    const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
@@ -59,10 +81,18 @@ export default function PaginatedTable({ config }) {
    };
 
    const handleSort = (field) => {
-      // Implement sorting logic here if needed
-      // For example, you could toggle between ascending/descending sort
-      console.log('Sorting by field:', field);
-   }
+      if (!field) return;
+
+      setSortConfig((prev) => ({
+         field,
+         direction:
+            prev.field === field && prev.direction === 'asc'
+               ? 'desc'
+               : 'asc'
+      }));
+
+      setCurrentPage(1);
+   };
 
    const handleNext = () => {
       if (currentPage < totalPages) {
@@ -155,14 +185,14 @@ export default function PaginatedTable({ config }) {
                   </tr>
                </thead>
                <tbody>
-                  {paginatedData.length === 0 && (
+                  {sortedData.length === 0 && (
                      <tr>
                         <td colSpan={columns.length + (actions?.length > 0 ? 1 : 0)} className="text-center text-muted">
                            No matching records found.
                         </td>
                      </tr>
                   )}
-                  {paginatedData.map((item, rowIndex) => (
+                  {sortedData.map((item, rowIndex) => (
                      <tr key={item[keyField]}>
                         {columns.map((col) => {
                            const maxLength = 20;
