@@ -217,8 +217,7 @@ export default function PaginatedTable({ config }) {
          {totalPages >= 1 && (
             <div className="d-flex justify-content-between align-items-center mt-3">
                <div className="text-muted">
-                  Showing {filteredData.length === 0 ? 0 : startIndex + 1} to {Math.min(endIndex, filteredData.length)} of {filteredData.length} entries
-                  {filterText.trim() && ` (filtered from ${data.length} total)`}
+                  Showing {sortedData.length === 0 ? 0 : startIndex + 1} to {Math.min(endIndex, sortedData.length)} of {sortedData.length} entries                  {filterText.trim() && ` (filtered from ${data.length} total)`}
                </div>
                <nav>
                   <ul className="pagination mb-0">
