@@ -96,7 +96,7 @@ export default function PaginatedTable({ config }) {
 
    return (
       <div style={{ paddingBottom: '150px' }}>
-         
+
          {/* Rows per page selector */}
          <div className="d-flex justify-content-between align-items-center mb-2">
             <div className="d-flex align-items-center">
@@ -134,7 +134,12 @@ export default function PaginatedTable({ config }) {
                <thead className="table-dark">
                   <tr>
                      {columns.map((col) => (
-                        <th key={col} className="text-start generic-th">{columnConfig[col]?.label || col}</th>
+                        <th
+                           key={col}
+                           data-sort={columnConfig[col]?.field}
+                           className="text-start generic-th">
+                           {columnConfig[col]?.label || col}
+                        </th>
                      ))}
                      {actions && actions.length > 0 && <th className="text-start generic-th">Actions</th>}
                   </tr>

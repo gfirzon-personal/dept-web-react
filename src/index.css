@@ -89,3 +89,8 @@ p {
     box-shadow: 0 0 24px rgba(32, 201, 151, 0.35);
   }
 }
+
+th[data-sort]:hover {
+    color: rgb(220, 225, 227) !important;
+    cursor: pointer;
+}
