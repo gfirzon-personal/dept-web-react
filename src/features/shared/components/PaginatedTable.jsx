@@ -179,6 +179,11 @@ export default function PaginatedTable({ config }) {
                            }}
                            className="text-start generic-th">
                            {columnConfig[col]?.label || col}
+                           {
+                              sortConfig.field === columnConfig[col]?.field && (
+                                 <i className={`bi sort-icon-circle ${sortConfig.direction === 'asc' ? 'bi-caret-up-fill' : 'bi-caret-down-fill'}`}></i>
+                              )
+                           }
                         </th>
                      ))}
                      {actions && actions.length > 0 && <th className="text-start generic-th">Actions</th>}
